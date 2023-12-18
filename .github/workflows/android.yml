@@ -11,7 +11,11 @@ jobs:
     steps:
     
     - name: checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
+      with:
+        ref: main
+        fetch-depth: 0
+        show-progress: true
     
     - name: set up JDK
       uses: actions/setup-java@v3
@@ -28,7 +32,7 @@ jobs:
       
     - name: Set github environments
       run: | 
-        echo "exec_datetime=$(date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_ENV
+        echo "exec_datetime=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_ENV
         echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
         echo "version_code=$(cat versionCode.txt)" >> $GITHUB_ENV
       
@@ -38,5 +42,5 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: Build-${{ env.version_code }}-${{ env.exec_datetime }}-${{ env.sha_short }}
+        name: Build-${{ env.version_code }}.${{ env.exec_datetime }}.${{ env.sha_short }}
         path: app/build/outputs/*
