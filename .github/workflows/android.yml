@@ -26,12 +26,11 @@ jobs:
     - name: Generate version code
       run: ./generateVersionCode.sh
       
-    - name: Set env variable
+    - name: Set github environments
       run: | 
         echo "exec_datetime=$(date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_ENV
         echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
         echo "version_code=$(cat versionCode.txt)" >> $GITHUB_ENV
-        env
       
     - name: Build with Gradle
       run: ./gradlew build
@@ -39,5 +38,5 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: Build-artifacts
+        name: Build-${{ env.version_code }}-${{ env.exec_datetime }}-${{ env.sha_short }}
         path: app/build/outputs/*
