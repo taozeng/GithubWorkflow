@@ -41,7 +41,7 @@ jobs:
       
     - name: Set github environments
       run: | 
-        echo "exec_datetime=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_ENV
+        echo "build_datetime=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_ENV
         echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
         echo "version_code=$(cat versionCode.txt)" >> $GITHUB_ENV
       
@@ -51,5 +51,5 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ env.SCOUT_BUILD_NAME }}.${{ env.version_code }}.${{ env.exec_datetime }}.${{ env.sha_short }}
+        name: ${{ env.SCOUT_BUILD_NAME }}.${{ env.version_code }}.${{ env.build_datetime }}.${{ env.sha_short }}
         path: app/build/outputs/*
