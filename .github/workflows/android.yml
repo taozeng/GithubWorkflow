@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
     
 env:
+  SCOUT_BUILD_NAME: EngineeringBuild
   SCOUT_CHECKOUT_REF: main
-  SCOUT_BUILD_TYPE: Engineering
 
 jobs:
   build:
@@ -14,7 +14,7 @@ jobs:
 
     steps:
     
-    - run: echo "*** Create ${{ env.SCOUT_BUILD_TYPE }} build from ${{ env.SCOUT_CHECKOUT_REF }} ***"
+    - run: echo "*** Create ${{ env.SCOUT_BUILD_NAME }} from ${{ env.SCOUT_CHECKOUT_REF }} ***"
     - run: |
         echo "Print build environment"
         env
@@ -51,5 +51,5 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ env.SCOUT_BUILD_TYPE }}.Build-${{ env.version_code }}.${{ env.exec_datetime }}.${{ env.sha_short }}
+        name: ${{ env.SCOUT_BUILD_NAME }}.${{ env.version_code }}.${{ env.exec_datetime }}.${{ env.sha_short }}
         path: app/build/outputs/*
