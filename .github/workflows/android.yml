@@ -2,6 +2,10 @@ name: Android CI
 
 on:
   workflow_dispatch:
+    
+env:
+  CHECKOUT_REF: main
+  BUILD_TYPE: Engineering
 
 jobs:
   build:
@@ -10,10 +14,16 @@ jobs:
 
     steps:
     
+    - run: echo "*** Create ${{ env.BUILD_TYPE }} build from {{ $env.CHECKOUT_REF }} ***"
+    - run: |
+        echo
+        env
+        echo
+      
     - name: checkout code
       uses: actions/checkout@v4
       with:
-        ref: main
+        ref: ${{ env.CHECKOUT_REF }}
         fetch-depth: 0
         show-progress: true
     
@@ -42,5 +52,5 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: Build-${{ env.version_code }}.${{ env.exec_datetime }}.${{ env.sha_short }}
+        name: ${{ env.BUILD_TYPE }}Build-${{ env.version_code }}.${{ env.exec_datetime }}.${{ env.sha_short }}
         path: app/build/outputs/*
