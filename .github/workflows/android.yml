@@ -1,12 +1,12 @@
-env:
-  SCOUT_CHECKOUT_REF: main
-  SCOUT_BUILD_TYPE: Engineering
-
-name: Android ${{ env.SCOUT_BUILD_TYPE }} Build
+name: Android CI
 
 on:
   workflow_dispatch:
     
+env:
+  SCOUT_CHECKOUT_REF: main
+  SCOUT_BUILD_TYPE: Engineering
+
 jobs:
   build:
 
