@@ -37,7 +37,7 @@ jobs:
         echo "version_code=$(cat versionCode.txt)" >> $GITHUB_ENV
       
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew clean assemble
     
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
