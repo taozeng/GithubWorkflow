@@ -18,7 +18,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 34
         versionCode versionFile.exists() ? versionFile.getText().toInteger() : localVersionOffset
-        versionName appVersionNumber + "-demo"
+        versionName appVersionNumber + "-release"
         buildConfigField("String", "CLIENT_VERSION", "\"${versionName}-${versionCode}\"")
     }
 
