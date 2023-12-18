@@ -18,7 +18,7 @@ jobs:
     steps:
 
     - name: Adding markdown
-      run: echo 'Create ${{ env.SCOUT_BUILD_NAME }} from ${{ env.SCOUT_CHECKOUT_REF }}' >> $GITHUB_STEP_SUMMARY
+      run: echo '### Create ${{ env.SCOUT_BUILD_NAME }} from ${{ env.SCOUT_CHECKOUT_REF }}' >> $GITHUB_STEP_SUMMARY
     
     - run: echo "*** Create ${{ env.SCOUT_BUILD_NAME }} from ${{ env.SCOUT_CHECKOUT_REF }} ***"
     - run: |
