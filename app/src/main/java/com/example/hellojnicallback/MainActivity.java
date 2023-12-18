@@ -18,6 +18,7 @@ package com.example.hellojnicallback;
 import androidx.annotation.Keep;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,11 +27,15 @@ public class MainActivity extends AppCompatActivity {
     int minute = 0;
     int second = 0;
     TextView tickView;
+    TextView versionView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         tickView = (TextView) findViewById(R.id.tickView);
+        versionView = (TextView) findViewById(R.id.textVersion);
+        versionView.setText(BuildConfig.CLIENT_VERSION);
     }
     @Override
     public void onResume() {
