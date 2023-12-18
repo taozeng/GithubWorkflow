@@ -16,7 +16,7 @@ jobs:
     
     - run: echo "*** Create ${{ env.SCOUT_BUILD_TYPE }} build from ${{ env.SCOUT_CHECKOUT_REF }} ***"
     - run: |
-        echo "Build environment"
+        echo "Print build environment"
         env
       
     - name: checkout code
@@ -51,5 +51,5 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ env.SCOUT_BUILD_TYPE }}Build-${{ env.version_code }}.${{ env.exec_datetime }}.${{ env.sha_short }}
+        name: ${{ env.SCOUT_BUILD_TYPE }}.Build-${{ env.version_code }}.${{ env.exec_datetime }}.${{ env.sha_short }}
         path: app/build/outputs/*
