@@ -18,7 +18,7 @@ jobs:
         show-progress: true
     
     - name: set up JDK
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'temurin'
@@ -40,7 +40,7 @@ jobs:
       run: ./gradlew clean assemble
     
     - name: Upload artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: Build-${{ env.version_code }}.${{ env.exec_datetime }}.${{ env.sha_short }}
         path: app/build/outputs/*
