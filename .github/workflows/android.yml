@@ -1,12 +1,12 @@
-name: Android CI
+env:
+  SCOUT_CHECKOUT_REF: main
+  SCOUT_BUILD_TYPE: Engineering
+
+name: Android ${{ env.SCOUT_BUILD_TYPE }} Build
 
 on:
   workflow_dispatch:
     
-env:
-  CHECKOUT_REF: main
-  BUILD_TYPE: Engineering
-
 jobs:
   build:
 
@@ -14,16 +14,15 @@ jobs:
 
     steps:
     
-    - run: echo "*** Create ${{ env.BUILD_TYPE }} build from {{ $env.CHECKOUT_REF }} ***"
+    - run: echo "*** Create ${{ env.SCOUT_BUILD_TYPE }} build from ${{ env.SCOUT_CHECKOUT_REF }} ***"
     - run: |
-        echo
+        echo "Build environment"
         env
-        echo
       
     - name: checkout code
       uses: actions/checkout@v4
       with:
-        ref: ${{ env.CHECKOUT_REF }}
+        ref: ${{ env.SCOUT_CHECKOUT_REF }}
         fetch-depth: 0
         show-progress: true
     
@@ -52,5 +51,5 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ env.BUILD_TYPE }}Build-${{ env.version_code }}.${{ env.exec_datetime }}.${{ env.sha_short }}
+        name: ${{ env.SCOUT_BUILD_TYPE }}Build-${{ env.version_code }}.${{ env.exec_datetime }}.${{ env.sha_short }}
         path: app/build/outputs/*
