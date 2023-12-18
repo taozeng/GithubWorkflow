@@ -13,14 +13,27 @@ android {
         versionCode 1
         versionName "1.0"
     }
-    buildTypes {
+
+    signingConfigs {
+        debug {
+            storeFile file("./../android-shared/build.config/debug.keystore")
+        }
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'),
-                          'proguard-rules.pro'
-            signingConfig signingConfigs.debug
+            storeFile file("./../android-shared/build.config/release.keystore")
+            storePassword "rootme"
+            keyAlias "androidreleasekey"
+            keyPassword "rootme"
+
         }
     }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+    
     externalNativeBuild {
         cmake {
             path "src/main/cpp/CMakeLists.txt"
