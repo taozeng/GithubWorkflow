@@ -60,4 +60,4 @@ jobs:
     - name: Adding markdown
       run: |
         echo '### Finished ${{ env.SCOUT_BUILD_NAME }} from ${{ env.SCOUT_CHECKOUT_REF }}' >> $GITHUB_STEP_SUMMARY
-        echo '#### Built from ${{ env.GITHUB_WORKFLOW }} @ ${{ env.GITHUB_REF_NAME }}' >> $GITHUB_STEP_SUMMARY
+        echo '#### Built from ${{ github.workflow }} @ ${{ github.ref_name }}' >> $GITHUB_STEP_SUMMARY
