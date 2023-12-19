@@ -59,6 +59,5 @@ jobs:
         
     - name: Adding summary
       run: |
-        echo '### Finished ${{ env.SCOUT_BUILD_NAME }} from ${{ env.SCOUT_CHECKOUT_REF }}' >> $GITHUB_STEP_SUMMARY
-        echo '#### Built from ${{ github.workflow }} @ ${{ github.ref_name }}' >> $GITHUB_STEP_SUMMARY
-        echo "$( git log --oneline --decorate )" >> $GITHUB_STEP_SUMMARY
+        echo "### ${{ env.SCOUT_BUILD_NAME }} Changelog" >> $GITHUB_STEP_SUMMARY
+        echo "$( git log --oneline )" >> $GITHUB_STEP_SUMMARY
