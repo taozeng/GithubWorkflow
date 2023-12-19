@@ -46,7 +46,6 @@ jobs:
         echo "scout_build_datetime=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_ENV
         echo "scout_sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
         echo "scout_sha_long=$(git rev-parse HEAD)" >> $GITHUB_ENV
-        echo "scout_repo_url=$(git config --get remote.origin.url)" >> $GITHUB_ENV
         echo "scout_full_ref=$(git describe --all)" >> $GITHUB_ENV
         echo "scout_version_code=$(cat versionCode.txt)" >> $GITHUB_ENV
     - name: Build with Gradle
@@ -74,8 +73,10 @@ jobs:
         fetch: false
     - name: Add build summary
       run: |
-        echo "**Git Repository:** ${{ env.scout_repo_url }}  " >> $GITHUB_STEP_SUMMARY
+        echo "**Git Repository:** https://github.com/${{ github.repository }}/tree/${{ env.scout_sha_long }}  " >> $GITHUB_STEP_SUMMARY
         echo "**Git revision:** ${{ env.scout_sha_long }}  " >> $GITHUB_STEP_SUMMARY
         echo "**Git reference:** ${{ env.scout_full_ref }}  " >> $GITHUB_STEP_SUMMARY
         echo "#### Changelog since the last successful build" >> $GITHUB_STEP_SUMMARY
         echo "${{ steps.changelog.outputs.changelog }}" >> $GITHUB_STEP_SUMMARY
+        
+        https://github.com/taozeng/GithubWorkflow/tree/e62b0a07273eec4f175289744796cc3451ae7f7e
