@@ -57,8 +57,12 @@ jobs:
         name: ${{ env.SCOUT_BUILD_NAME }}.${{ env.version_code }}.${{ env.build_datetime }}.${{ env.sha_short }}
         path: app/build/outputs/*
 
-    - name: Get last successful commit
-      uses: nrwl/nx-set-shas@v4
+    - name: Find matching workflow
+      uses: SamhammerAG/last-successful-build-action@v4
+      with:
+        branch: ${{ env.SCOUT_CHECKOUT_REF }}
+        workflow: "android"
+        verify: true
     
     - name: Show SHA
       run: |
