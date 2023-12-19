@@ -57,8 +57,8 @@ jobs:
         name: ${{ env.SCOUT_BUILD_NAME }}.${{ env.version_code }}.${{ env.build_datetime }}.${{ env.sha_short }}
         path: app/build/outputs/*
         
-    - name: Adding markdown
+    - name: Adding summary
       run: |
         echo '### Finished ${{ env.SCOUT_BUILD_NAME }} from ${{ env.SCOUT_CHECKOUT_REF }}' >> $GITHUB_STEP_SUMMARY
         echo '#### Built from ${{ github.workflow }} @ ${{ github.ref_name }}' >> $GITHUB_STEP_SUMMARY
-        echo '$( git log --pretty=format:"%an: %s" )'
+        echo "$( git log --oneline --decorate )" >> $GITHUB_STEP_SUMMARY
