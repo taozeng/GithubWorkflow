@@ -66,14 +66,13 @@ jobs:
         workflow: "Android CI"
         verify: true
     
-    - name: commit id
+    - name: print commit id
       run: |
-        echo "${{ github.sha }}"
         echo "${{ steps.last_successful_commit.outputs.sha }}"
 
     - name: Changelog
       uses: scottbrenner/generate-changelog-action@master
-      id: Changelog
+      id: change_log
       with:
         from-tag: v1.0
         to-tag: HEAD   
@@ -81,4 +80,4 @@ jobs:
     - name: Adding summary
       run: |
         echo "### ${{ env.SCOUT_BUILD_NAME }} Changelog" >> $GITHUB_STEP_SUMMARY
-        echo "$( git log --oneline )" >> $GITHUB_STEP_SUMMARY
+        echo "$( git log --oneline ${{ steps.last_successful_commit.outputs.sha }}..HEAD)" >> $GITHUB_STEP_SUMMARY
