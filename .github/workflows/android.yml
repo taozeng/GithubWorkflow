@@ -66,7 +66,17 @@ jobs:
         workflow: "Android CI"
         verify: true 
 
+    - name: Generate changelog
+      id: changelog
+      uses: metcalfc/changelog-generator@v4.2.0
+      with:
+        myToken: ${{ secrets.MY_GITHUB_TOKEN }}
+        head-ref: HEAD
+        base-ref: ${{ steps.last_successful_commit.outputs.sha }}
+        fetch: false
+      
     - name: Adding summary
       run: |
         echo "### ${{ env.SCOUT_BUILD_NAME }} - Changelog since the last successful build" >> $GITHUB_STEP_SUMMARY
-        echo "$( git log --oneline ${{ steps.last_successful_commit.outputs.sha }}..HEAD )" >> $GITHUB_STEP_SUMMARY
+      # echo "$( git log --oneline ${{ steps.last_successful_commit.outputs.sha }}..HEAD )" >> $GITHUB_STEP_SUMMARY
+        echo "${{ steps.changelog.outputs.changelog }}" >> $GITHUB_STEP_SUMMARY
