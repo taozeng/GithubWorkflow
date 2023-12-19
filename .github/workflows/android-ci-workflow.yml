@@ -78,5 +78,3 @@ jobs:
         echo "**Git reference:** ${{ env.scout_full_ref }}  " >> $GITHUB_STEP_SUMMARY
         echo "#### Changelog since the last successful build" >> $GITHUB_STEP_SUMMARY
         echo "${{ steps.changelog.outputs.changelog }}" >> $GITHUB_STEP_SUMMARY
-        
-        https://github.com/taozeng/GithubWorkflow/tree/e62b0a07273eec4f175289744796cc3451ae7f7e
