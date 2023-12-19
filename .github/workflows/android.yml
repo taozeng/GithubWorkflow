@@ -78,5 +78,4 @@ jobs:
     - name: Adding summary
       run: |
         echo "### ${{ env.SCOUT_BUILD_NAME }} - Changelog since the last successful build" >> $GITHUB_STEP_SUMMARY
-      # echo "$( git log --oneline ${{ steps.last_successful_commit.outputs.sha }}..HEAD )" >> $GITHUB_STEP_SUMMARY
         echo "${{ steps.changelog.outputs.changelog }}" >> $GITHUB_STEP_SUMMARY
