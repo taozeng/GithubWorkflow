@@ -14,8 +14,7 @@ jobs:
   call-workflow:
     uses: ./.github/workflows/android-ci-workflow.yml
     with:
-      inputs:
-        scout_checkout_ref: 'main'
-        scout_build_type: 'EngineeringBuild'
-      secrets:
-        scout_github_token: ${{ secrets.MY_GITHUB_TOKEN }}
+      scout_checkout_ref: 'main'
+      scout_build_type: 'EngineeringBuild'
+    secrets:
+      scout_github_token: ${{ secrets.MY_GITHUB_TOKEN }}
