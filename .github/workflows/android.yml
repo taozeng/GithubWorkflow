@@ -48,7 +48,7 @@ jobs:
         echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
         echo "version_code=$(cat versionCode.txt)" >> $GITHUB_ENV
       
-    #- name: Build with Gradle
+    #  name: Build with Gradle
     #  run: ./gradlew clean assemble
     
     - name: Upload artifacts
