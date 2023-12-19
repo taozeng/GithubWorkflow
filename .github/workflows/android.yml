@@ -62,7 +62,7 @@ jobs:
       with:
         token: ${{ secrets.MY_GITHUB_TOKEN }}
         branch: ${{ env.SCOUT_CHECKOUT_REF }}
-        workflow: "android"
+        workflow: "Android CI"
         verify: true
     
     - name: Show SHA
