@@ -1,7 +1,4 @@
-#
-# A reusable workflow to create Android applications
-#
-name: Build Android Application
+name: Reusable workflow to create Android applications
 
 on:
   workflow_call:
@@ -18,9 +15,7 @@ on:
       secrets:
         scout_github_token:
           description: 'An optional github token, required if triggered by workflow_dispatch'
-          required: false
-          type: string
-          default: ${{ secrets.GITHUB_TOKEN }}
+          required: true
 
 jobs:
   build_job:

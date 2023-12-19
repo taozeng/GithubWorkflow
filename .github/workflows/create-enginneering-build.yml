@@ -11,7 +11,7 @@ env:
   SCOUT_CHECKOUT_REF: main
 
 jobs:
-  call-workflow-passing-data:
+  call-workflow:
     uses: ./.github/workflows/android-ci-workflow.yml
     with:
       inputs:
