@@ -74,9 +74,8 @@ jobs:
         fetch: false
     - name: Add build summary
       run: |
-        echo "#### ${{ inputs.scout_build_name }}" >> $GITHUB_STEP_SUMMARY
         echo "**Git Repository:** ${{ env.scout_repo_url }}  " >> $GITHUB_STEP_SUMMARY
-        echo "**Git revision:** ${{ env.scout_repo_url }}  " >> $GITHUB_STEP_SUMMARY
+        echo "**Git revision:** ${{ env.scout_sha_long }}  " >> $GITHUB_STEP_SUMMARY
         echo "**Git reference:** ${{ env.scout_full_ref }}  " >> $GITHUB_STEP_SUMMARY
         echo "#### Changelog since the last successful build" >> $GITHUB_STEP_SUMMARY
         echo "${{ steps.changelog.outputs.changelog }}" >> $GITHUB_STEP_SUMMARY
