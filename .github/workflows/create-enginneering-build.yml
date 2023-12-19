@@ -12,7 +12,7 @@ env:
 
 jobs:
   call-workflow:
-    name: Create ${{ env.SCOUT_BUILD_NAME }}
+    name: Create EngineeringBuild
     uses: ./.github/workflows/android-ci-workflow.yml
     with:
       scout_checkout_ref: ${{ env.SCOUT_CHECKOUT_REF }}
