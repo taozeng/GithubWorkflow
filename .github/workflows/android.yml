@@ -64,20 +64,9 @@ jobs:
         token: ${{ secrets.MY_GITHUB_TOKEN }}
         branch: ${{ env.SCOUT_CHECKOUT_REF }}
         workflow: "Android CI"
-        verify: true
-    
-    - name: print commit id
-      run: |
-        echo "${{ steps.last_successful_commit.outputs.sha }}"
-
-    - name: Changelog
-      uses: scottbrenner/generate-changelog-action@master
-      id: change_log
-      with:
-        from-tag: ${{ steps.last_successful_commit.outputs.sha }}
-        to-tag: HEAD   
+        verify: true 
 
     - name: Adding summary
       run: |
-        echo "### ${{ env.SCOUT_BUILD_NAME }} Changelog" >> $GITHUB_STEP_SUMMARY
+        echo "### ${{ env.SCOUT_BUILD_NAME }} - Changelog since the last successful build" >> $GITHUB_STEP_SUMMARY
         echo "$( git log --oneline ${{ steps.last_successful_commit.outputs.sha }}..HEAD )" >> $GITHUB_STEP_SUMMARY
