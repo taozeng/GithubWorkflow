@@ -16,9 +16,6 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-
-    - name: Adding markdown
-      run: echo '### Create ${{ env.SCOUT_BUILD_NAME }} from ${{ env.SCOUT_CHECKOUT_REF }}' >> $GITHUB_STEP_SUMMARY
     
     - run: echo "*** Create ${{ env.SCOUT_BUILD_NAME }} from ${{ env.SCOUT_CHECKOUT_REF }} ***"
     - run: |
@@ -59,3 +56,8 @@ jobs:
       with:
         name: ${{ env.SCOUT_BUILD_NAME }}.${{ env.version_code }}.${{ env.build_datetime }}.${{ env.sha_short }}
         path: app/build/outputs/*
+        
+    - name: Adding markdown
+      run: |
+        echo '### Finished ${{ env.SCOUT_BUILD_NAME }} from ${{ env.SCOUT_CHECKOUT_REF }}' >> $GITHUB_STEP_SUMMARY
+        echo '#### Built from ${{ env.GITHUB_WORKFLOW }} @ ${{ env.GITHUB_REF_NAME }}' >> $GITHUB_STEP_SUMMARY
