@@ -47,6 +47,9 @@ jobs:
         echo "build_datetime=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_ENV
         echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
         echo "version_code=$(cat versionCode.txt)" >> $GITHUB_ENV
+      
+    #  - name: Build with Gradle
+    #  run: ./gradlew clean assemble
     
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
@@ -58,7 +61,7 @@ jobs:
       uses: nrwl/nx-set-shas@v4
     
     - name: Show SHA
-    - run: |
+      run: |
           echo "BASE: ${{ env.NX_BASE }}"
           echo "HEAD: ${{ env.NX_HEAD }}"      
           
