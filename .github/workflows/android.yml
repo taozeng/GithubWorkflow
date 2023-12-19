@@ -57,19 +57,27 @@ jobs:
         name: ${{ env.SCOUT_BUILD_NAME }}.${{ env.version_code }}.${{ env.build_datetime }}.${{ env.sha_short }}
         path: app/build/outputs/*
 
-    - name: Find matching workflow
+    - name: Find last successful build
       uses: SamhammerAG/last-successful-build-action@v4
+      id: last_successful_commit
       with:
         token: ${{ secrets.MY_GITHUB_TOKEN }}
         branch: ${{ env.SCOUT_CHECKOUT_REF }}
         workflow: "Android CI"
         verify: true
     
-    - name: Show SHA
+    - name: commit id
       run: |
-          echo "BASE: ${{ env.NX_BASE }}"
-          echo "HEAD: ${{ env.NX_HEAD }}"      
-          
+        echo "${{ github.sha }}"
+        echo "${{ steps.last_successful_commit.outputs.sha }}"
+
+    - name: Changelog
+      uses: scottbrenner/generate-changelog-action@master
+      id: Changelog
+      with:
+        from-tag: v1.0
+        to-tag: HEAD   
+
     - name: Adding summary
       run: |
         echo "### ${{ env.SCOUT_BUILD_NAME }} Changelog" >> $GITHUB_STEP_SUMMARY
