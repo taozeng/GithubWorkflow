@@ -1,0 +1,21 @@
+name: Create Engineering Build
+
+on:
+  schedule:
+    # run everyday at 20:30 UTC (04:30 PST)
+    - cron:  '30 20 * * *'
+  workflow_dispatch:
+    
+env:
+  SCOUT_BUILD_NAME: EngineeringBuild
+  SCOUT_CHECKOUT_REF: main
+
+jobs:
+  call-workflow-passing-data:
+    uses: ./.github/workflows/android-ci-workflow.yml
+    with:
+      inputs:
+        scout_checkout_ref: 'main'
+        scout_build_type: 'EngineeringBuild'
+      secrets:
+        scout_github_token: ${{ secrets.MY_GITHUB_TOKEN }}

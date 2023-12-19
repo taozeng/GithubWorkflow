@@ -1,0 +1,87 @@
+#
+# A reusable workflow to create Android applications
+#
+name: Build Android Application
+
+on:
+  workflow_call:
+      inputs:
+        scout_checkout_ref:
+          description: 'A branch, tag or SHA to checkout the code'
+          required: true
+          type: string
+        scout_build_name:
+          description: 'An optional string to describe the build'          
+          required: false
+          type: string
+          default: 'Build'
+      secrets:
+        scout_github_token:
+          description: 'An optional github token, required if triggered by workflow_dispatch'
+          required: false
+          type: string
+          default: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  build_job:
+    name: Create ${{ inputs.scout_build_name }}
+    runs-on: ubuntu-22.04
+    steps:
+    - name: Print build environment
+      run:
+        env | sort      
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ inputs.scout_checkout_ref }}
+        fetch-depth: 0
+        show-submodules: true
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: gradle
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    - name: Generate version code
+      run: ./generateVersionCode.sh
+    - name: Set github variables
+      run: | 
+        echo "scout_build_datetime=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_ENV
+        echo "scout_sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+        echo "scout_sha_long=$(git rev-parse HEAD)" >> $GITHUB_ENV
+        echo "scout_repo_url=$(git config --get remote.origin.url)" >> $GITHUB_ENV
+        echo "scout_full_ref=$(git describe --all)" >> $GITHUB_ENV
+        echo "scout_version_code=$(cat versionCode.txt)" >> $GITHUB_ENV
+    - name: Build with Gradle
+      run: ./gradlew clean assemble
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.scout_build_name }}.${{ env.scout_version_code }}.${{ env.scout_build_datetime }}.${{ env.scout_sha_short }}
+        path: app/build/outputs/*
+    - name: Find last successful build
+      uses: SamhammerAG/last-successful-build-action@v4
+      id: last_successful_commit
+      with:
+        token: ${{ secrets.scout_github_token }}
+        branch: ${{ inputs.scout_checkout_ref }}
+        workflow: ${{ github.workflow }}
+        verify: true 
+    - name: Generate changelog
+      id: changelog
+      uses: metcalfc/changelog-generator@v4.2.0
+      with:
+        head-ref: HEAD
+        myToken: ${{ secrets.scout_github_token }}
+        base-ref: ${{ steps.last_successful_commit.outputs.sha }}
+        fetch: false
+    - name: Add build summary
+      run: |
+        echo "#### ${{ inputs.scout_build_name }}" >> $GITHUB_STEP_SUMMARY
+        echo "**Git Repository:** ${{ env.scout_repo_url }}  " >> $GITHUB_STEP_SUMMARY
+        echo "**Git revision:** ${{ env.scout_repo_url }}  " >> $GITHUB_STEP_SUMMARY
+        echo "**Git reference:** ${{ env.scout_full_ref }}  " >> $GITHUB_STEP_SUMMARY
+        echo "#### Changelog since the last successful build" >> $GITHUB_STEP_SUMMARY
+        echo "${{ steps.changelog.outputs.changelog }}" >> $GITHUB_STEP_SUMMARY
