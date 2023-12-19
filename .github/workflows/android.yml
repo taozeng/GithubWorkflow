@@ -48,8 +48,8 @@ jobs:
         echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
         echo "version_code=$(cat versionCode.txt)" >> $GITHUB_ENV
       
-    #  - name: Build with Gradle
-    #  run: ./gradlew clean assemble
+    - name: Build with Gradle
+      run: ./gradlew clean assemble
     
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
@@ -74,10 +74,10 @@ jobs:
       uses: scottbrenner/generate-changelog-action@master
       id: change_log
       with:
-        from-tag: v1.0
+        from-tag: ${{ steps.last_successful_commit.outputs.sha }}
         to-tag: HEAD   
 
     - name: Adding summary
       run: |
         echo "### ${{ env.SCOUT_BUILD_NAME }} Changelog" >> $GITHUB_STEP_SUMMARY
-        echo "$( git log --oneline ${{ steps.last_successful_commit.outputs.sha }}..HEAD)" >> $GITHUB_STEP_SUMMARY
+        echo "$( git log --oneline ${{ steps.last_successful_commit.outputs.sha }}..HEAD )" >> $GITHUB_STEP_SUMMARY
