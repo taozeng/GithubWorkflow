@@ -48,15 +48,23 @@ jobs:
         echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
         echo "version_code=$(cat versionCode.txt)" >> $GITHUB_ENV
       
-    - name: Build with Gradle
-      run: ./gradlew clean assemble
+    #- name: Build with Gradle
+    #  run: ./gradlew clean assemble
     
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
         name: ${{ env.SCOUT_BUILD_NAME }}.${{ env.version_code }}.${{ env.build_datetime }}.${{ env.sha_short }}
         path: app/build/outputs/*
-        
+
+    - name: Get last successful commit
+      uses: nrwl/nx-set-shas@v4
+    
+    - name: Show SHA
+    - run: |
+          echo "BASE: ${{ env.NX_BASE }}"
+          echo "HEAD: ${{ env.NX_HEAD }}"      
+          
     - name: Adding summary
       run: |
         echo "### ${{ env.SCOUT_BUILD_NAME }} Changelog" >> $GITHUB_STEP_SUMMARY
