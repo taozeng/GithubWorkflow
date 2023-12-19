@@ -60,6 +60,7 @@ jobs:
     - name: Find matching workflow
       uses: SamhammerAG/last-successful-build-action@v4
       with:
+        token: ${{ secrets.MY_GITHUB_TOKEN }}
         branch: ${{ env.SCOUT_CHECKOUT_REF }}
         workflow: "android"
         verify: true
