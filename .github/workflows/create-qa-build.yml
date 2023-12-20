@@ -1,0 +1,17 @@
+name: Create Engineering Build
+
+on:
+  schedule:
+    # run everyday at 20:30 UTC (04:30 PST)
+    - cron:  '30 20 * * *'
+  workflow_dispatch:
+
+jobs:
+  call-workflow:
+    name: Create QaBuild
+    uses: ./.github/workflows/android-ci-workflow.yml
+    with:
+      scout_checkout_ref: build/qa
+      scout_build_name: QaBuild
+    secrets:
+      scout_github_token: ${{ secrets.MY_GITHUB_TOKEN }}
