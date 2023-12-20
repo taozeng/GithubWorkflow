@@ -16,7 +16,7 @@ jobs:
         id: last_successful_commit
         with:
           branch: 'master'
-          workflow_id: 'deploy.yml'
+          workflow_id: 'android.yml'
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - run: |
           echo "commit id: ${{ steps.last_successful_commit.outputs.commit_hash }}"
