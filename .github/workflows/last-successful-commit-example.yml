@@ -1,0 +1,22 @@
+name: Deploy Website
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Deploying affected apps
+    steps:
+      - uses: actions/checkout@v4
+      - uses: bahmutov/npm-install@v1.4.5
+      - uses: nrwl/last-successful-commit-action@v3.1
+        id: last_successful_commit
+        with:
+          branch: 'master'
+          workflow_id: 'deploy.yml'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - run: |
+          echo "commit id: ${{ steps.last_successful_commit.outputs.commit_hash }}"
