@@ -67,9 +67,9 @@ jobs:
       id: changelog
       uses: metcalfc/changelog-generator@v4.2.0
       with:
-        head-ref: HEAD
-        myToken: ${{ secrets.scout_github_token }}
+        head-ref: ${{ env.scout_sha_long }}
         base-ref: ${{ steps.last_successful_commit.outputs.sha }}
+        myToken: ${{ secrets.scout_github_token }}
         fetch: false
     - name: Add build summary
       run: |
