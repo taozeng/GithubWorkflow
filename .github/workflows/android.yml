@@ -1,6 +1,9 @@
 name: Android CI
 
 on:
+  push:
+    branches:
+      - 'main'
   schedule:
     # run everyday at 20:30 UTC (04:30 PST)
     - cron:  '30 20 * * *'
@@ -61,7 +64,7 @@ jobs:
       uses: SamhammerAG/last-successful-build-action@v4
       id: last_successful_commit
       with:
-        token: ${{ secrets.MY_GITHUB_TOKEN }}
+        token: ${{ secrets.GITHUB_TOKEN }}
         branch: ${{ env.SCOUT_CHECKOUT_REF }}
         workflow: "Android CI"
         verify: true 
@@ -70,7 +73,7 @@ jobs:
       id: changelog
       uses: metcalfc/changelog-generator@v4.2.0
       with:
-        myToken: ${{ secrets.MY_GITHUB_TOKEN }}
+        myToken: ${{ secrets.GITHUB_TOKEN }}
         head-ref: HEAD
         base-ref: ${{ steps.last_successful_commit.outputs.sha }}
         fetch: false
