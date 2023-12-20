@@ -25,8 +25,8 @@ jobs:
     name: Init Job
     steps:
       - run: |
-          echo "build_name: $ {{ inputs.build_name }}"
-          echo "checkout_ref: $ {{ inputs.checkout_ref }}"
+          echo "build_name: ${{ inputs.build_name }}"
+          echo "checkout_ref: ${{ inputs.checkout_ref }}"
           
   myjob:
     runs-on: ubuntu-latest
