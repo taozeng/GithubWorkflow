@@ -11,6 +11,13 @@ env:
   build_name: EngineeringBuild
   
 jobs:
+  init-vars-job:
+    name: Initialize global variables
+    steps:
+      - run: |
+          echo "{{ env.checkout_ref }}"
+          echo "{{ env.build_name }}"
+    
   call-workflow-job:
     name: Generate ${{ build_name }}
     permissions:
