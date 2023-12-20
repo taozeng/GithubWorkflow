@@ -28,7 +28,6 @@ jobs:
   myJob:
     runs-on: ubuntu-latest
     name: My Job
-    needs: initJob
     env:
       build_name: ${{ inputs.build_name || 'EngineeringBuild' }}
       checkout_ref: ${{ inputs.checkout_ref || 'main' }}
