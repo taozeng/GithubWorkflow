@@ -28,9 +28,10 @@ jobs:
           echo "build_name: ${{ inputs.build_name }}"
           echo "checkout_ref: ${{ inputs.checkout_ref }}"
           
-  myjob:
+  myJob:
     runs-on: ubuntu-latest
     name: My Job
+    needs: initJob
     steps:
       - uses: actions/checkout@v3
         with:
