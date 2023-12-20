@@ -2,12 +2,32 @@ name: NX sha examples
 
 on:
   workflow_dispatch:
+    inputs:
+      build_name:
+        required: false
+        type: choice
+        default: "EngineeringBuild"
+        options:
+        - "EngineeringBuild"
+        - "QaBuild"
+      checkout_ref:
+        required: false
+        type: string
+        default: "main"        
 
 permissions:
   actions: read
   contents: read
   
 jobs:
+  initJob:
+    runs-on: ubuntu-latest
+    name: Init Job
+    steps:
+      - run: |
+          echo "build_name: $ {{ inputs.build_name }}"
+          echo "checkout_ref: $ {{ inputs.checkout_ref }}"
+          
   myjob:
     runs-on: ubuntu-latest
     name: My Job
