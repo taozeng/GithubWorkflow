@@ -13,4 +13,4 @@ jobs:
       scout_checkout_ref: main
       scout_build_name: EngineeringBuild
     secrets:
-      scout_github_token: ${{ secrets.GITHUB_TOKEN }}
+      scout_github_token: ${{ secrets.SCOUT_BUILD_TOKEN }}
