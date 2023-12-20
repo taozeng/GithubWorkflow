@@ -55,7 +55,7 @@ jobs:
       id: generate_artifact_name
       run: |
         echo "artifact_name=${{ inputs.scout_build_name }}.${{ env.scout_version_code }}.$(date +'%Y%m%d-%H%M%S').$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-    - name: Upload artifacts
+    - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: ${{ steps.generate_artifact_name.outputs.artifact_name }}
