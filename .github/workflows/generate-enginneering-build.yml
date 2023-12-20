@@ -6,13 +6,17 @@ on:
       - 'main'
     workflow_dispatch:
 
+env:
+  checkout_ref: main
+  build_name: EngineeringBuild
+  
 jobs:
   call-workflow-job:
-    name: Generate EngineeringBuild
+    name: Generate ${{ build_name }}
     permissions:
       actions: read
       contents: read
     uses: ./.github/workflows/android-ci-workflow.yml
     with:
-      scout_checkout_ref: main
-      scout_build_name: EngineeringBuild
+      scout_checkout_ref: ${{ checkout_ref }}
+      scout_build_name: ${{ build_name }}
