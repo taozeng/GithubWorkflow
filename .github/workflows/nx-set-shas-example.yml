@@ -29,9 +29,11 @@ jobs:
     runs-on: ubuntu-latest
     name: Init Job
     steps:
-      - run: |
-          echo "build_name: ${{ inputs.build_name }}"
-          echo "checkout_ref: ${{ inputs.checkout_ref }}"
+      - name: copy outputs
+        id: step_vars
+        run: |
+          echo "build_name: ${{ inputs.build_name || 'EngineeringBuild' }}"
+          echo "checkout_ref: ${{ inputs.checkout_ref || 'main' }}"
           
   myJob:
     runs-on: ubuntu-latest
