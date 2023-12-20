@@ -59,6 +59,7 @@ jobs:
       uses: SamhammerAG/last-successful-build-action@v4
       id: last_successful_commit
       with:
+        token: ${{ secrets.scout_github_token }}
         branch: ${{ inputs.scout_checkout_ref }}
         workflow: ${{ github.workflow }}
         verify: true 
