@@ -1,0 +1,26 @@
+on:
+  workflow_dispatch:
+    inputs:
+      milestone:
+        description: 'Milestone for release'
+        required: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build Changelog
+        id: github_release
+        uses: okcredit/changelog-creator-action@{latest-release}
+        with:
+          milestone: ${{ github.event.inputs.milestone }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ steps.github_release.outputs.milestone }}
+          release_name: ${{ steps.github_release.outputs.milestone }}
+          body: ${{steps.github_release.outputs.changelog}}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
