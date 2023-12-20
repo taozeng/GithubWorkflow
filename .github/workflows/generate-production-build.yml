@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
 
 env:
-  CHECKOUT_REF: release
-  BUILD_NAME: ProductionBuild
+  CHECKOUT_REF: 'release'
+  BUILD_NAME: 'ProductionBuild'
 
 jobs:
   init_vars_job:
