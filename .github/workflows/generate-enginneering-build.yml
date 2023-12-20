@@ -31,12 +31,14 @@ jobs:
     outputs:
       scout_checkout_ref: ${{ steps.vars_step.outputs.checkout_ref }}
       scout_build_name: ${{ steps.vars_step.outputs.build_name }}
+      scout_archive_artifact: ${{ steps.vars_step.outputs.archive_artifact }}
     steps:
       - name: copy outputs
         id: vars_step
         run: |
           echo "checkout_ref=${{ inputs.checkout_ref || env.CHECKOUT_REF }} " >> $GITHUB_OUTPUT
           echo "build_name=${{ inputs.build_name || env.BUILD_NAME }}" >> $GITHUB_OUTPUT    
+          echo "archive_artifact=${{ inputs.build_name && inputs.build_name != env.BUILD_NAME }}" >> $GITHUB_OUTPUT    
   call_workflow_job:
     needs: init_vars_job
     name: Generate ${{ needs.init_vars_job.outputs.scout_build_name }}
@@ -48,7 +50,7 @@ jobs:
       scout_checkout_ref: ${{ needs.init_vars_job.outputs.scout_checkout_ref }}
       scout_build_name: ${{ needs.init_vars_job.outputs.scout_build_name }}
   archive_artifact_job:
-    if: needs.init_vars_job.outputs.scout_build_name != env.BUILD_NAME
+    if: needs.init_vars_job.outputs.scout_archive_artifact
     needs: call_workflow_job
     name: Archive Artifact
     runs-on: ubuntu-latest
