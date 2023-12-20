@@ -1,14 +1,14 @@
-name: Create Production Build
+name: Generate QA Build
 
 on:
   workflow_dispatch:
 
 jobs:
   call-workflow:
-    name: Create ProductionBuild
+    name: Generate QaBuild
     uses: ./.github/workflows/android-ci-workflow.yml
     with:
-      scout_checkout_ref: release
-      scout_build_name: ProductionBuild
+      scout_checkout_ref: build/qa
+      scout_build_name: QaBuild
     secrets:
       scout_github_token: ${{ secrets.SCOUT_BUILD_TOKEN }}

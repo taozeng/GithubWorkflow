@@ -1,4 +1,4 @@
-name: Create Engineering Build
+name: Generate Engineering Build
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   call-workflow:
-    name: Create EngineeringBuild
+    name: Generate EngineeringBuild
     uses: ./.github/workflows/android-ci-workflow.yml
     with:
       scout_checkout_ref: main
