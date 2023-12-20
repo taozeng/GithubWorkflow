@@ -5,7 +5,11 @@ on:
   push:
     branches:
       - main
-      - 
+
+permissions:
+  actions: read
+  contents: read
+  
 jobs:
   myjob:
     runs-on: ubuntu-latest
