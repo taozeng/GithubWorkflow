@@ -20,7 +20,7 @@ jobs:
           echo "{{ env.build_name }}"
     
   call-workflow-job:
-    name: Generate ${{ build_name }}
+    name: Generate ${{ env.build_name }}
     permissions:
       actions: read
       contents: read
