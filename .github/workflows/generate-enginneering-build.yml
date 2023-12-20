@@ -22,7 +22,8 @@ on:
 
 env:
   CHECKOUT_REF: 'main'
-  BUILD_NAME: "EngineeringBuild"
+  BUILD_NAME: 'EngineeringBuild'
+  S3_BUCKET: 'MyBucket'
 
 jobs:
   init_vars_job:
@@ -50,8 +51,10 @@ jobs:
       scout_checkout_ref: ${{ needs.init_vars_job.outputs.scout_checkout_ref }}
       scout_build_name: ${{ needs.init_vars_job.outputs.scout_build_name }}
   archive_artifact_job:
+    needs:
+      - init_vars_job
+      - call_workflow_job
     if: needs.init_vars_job.outputs.scout_archive_artifact
-    needs: call_workflow_job
     name: Archive Artifact
     runs-on: ubuntu-latest
     steps:
@@ -61,8 +64,10 @@ jobs:
           name: ${{ needs.call_workflow_job.outputs.scout_artifact_name }}  
       - name: Copy to S3
         run: | 
-          echo 'TODO - archive to S3'
+          echo 'TODO - archive to S3' 
+          echo 's3_bucket=${{ env.S3_BUCKET }}' >> $GITHUB_ENV
+          echo "s3_path=${{ needs.init_vars_job.outputs.scout_build_name }}/${{ needs.call_workflow_job.outputs.scout_artifact_name }}" >> $GITHUB_ENV
       - name: Add build summary
         run: |
-          echo "#### This build artifact is archived at [Amazon S3 Bucket](https://s3.amazon.com/myBucket/${{ needs.init_vars_job.outputs.scout_build_name }}/${{ needs.call_workflow_job.outputs.scout_artifact_name }})" >> $GITHUB_STEP_SUMMARY
+          echo "#### This build artifact is archived at [Amazon S3 Bucket (TODO)](https://s3.amazon.com/${{ env.s3_bucket }}/${{ env.s3_path }})" >> $GITHUB_STEP_SUMMARY
           
