@@ -15,7 +15,7 @@ on:
       outputs:
         scout_artifact_name:
           description: 'The file name of the generated artifact'
-          value: ${{ jobs.build-job.outputs.scout_artifact_name }}
+          value: ${{ jobs.build-job.outputs.artifact_name }}
 
 jobs:
   build-job:
