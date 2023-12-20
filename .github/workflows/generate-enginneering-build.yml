@@ -8,6 +8,9 @@ on:
 jobs:
   call-workflow:
     name: Generate EngineeringBuild
+    permissions:
+      actions: read
+      contents: read
     uses: ./.github/workflows/android-ci-workflow.yml
     with:
       scout_checkout_ref: main
