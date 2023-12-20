@@ -18,7 +18,6 @@ package com.example.hellojnicallback;
 import androidx.annotation.Keep;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         hour = minute = second = 0;
-        ((TextView)findViewById(R.id.hellojniMsg)).setText(stringFromJNI());
+        ((TextView)findViewById(R.id.jniMsg)).setText(stringFromJNI());
         startTicks();
     }
 
