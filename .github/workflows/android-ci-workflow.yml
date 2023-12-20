@@ -15,12 +15,14 @@ on:
       outputs:
         scout_artifact_name:
           description: 'The file name of the generated artifact'
-          value: ${{ env.scout_version_code }}
+          value: ${{ jobs.build-job.outputs.scout_artifact_name }}
 
 jobs:
   build-job:
     name: Build
     runs-on: ubuntu-22.04
+    outputs:
+      artifact_name: ${{ steps.generate_artifact_name.outputs.artifact_name }}
     steps:
     - name: Print inputs
       run: |
@@ -54,10 +56,13 @@ jobs:
         echo "scout_version_code=$(cat versionCode.txt)" >> $GITHUB_ENV
     - name: Build with Gradle
       run: ./gradlew clean assemble
+    - name: Generate artifact name
+      id: generate_artifact_name
+      run: echo "artifact_name=${{ inputs.scout_build_name }}.${{ env.scout_version_code }}.${{ env.scout_build_datetime }}.${{ env.scout_sha_short }}" >> $GITHUB_OUTPUT
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ inputs.scout_build_name }}.${{ env.scout_version_code }}.${{ env.scout_build_datetime }}.${{ env.scout_sha_short }}
+        name: ${{ steps.generate_artifact_name.outputs.artifact_name }}
         path: app/build/outputs/*
     - name: Find last successful build
       id: nx_set_shas
