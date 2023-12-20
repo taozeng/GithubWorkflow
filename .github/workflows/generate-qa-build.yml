@@ -1,15 +1,24 @@
 name: Generate QA Build
 
-on:
-  workflow_dispatch:
+env:
+  CHECKOUT_REF: build/qa
+  BUILD_NAME: QaBuild
 
 jobs:
-  call-workflow-job:
-    name: Generate QaBuild
+  init_vars_job:
+    name: Initialize Variable
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "scout_checkout_ref={{ env.CHECKOUT_REF }} " >> $GITHUB_OUTPUT
+          echo "scout_build_name={{ env.BUILD_NAME }}" >> $GITHUB_OUTPUT    
+  call_workflow_job:
+    needs: init_vars_job
+    name: Generate ${{ needs.init_vars_job.outputs.scout_build_name }}
     permissions:
       actions: read
       contents: read
     uses: ./.github/workflows/android-ci-workflow.yml
     with:
-      scout_checkout_ref: build/qa
-      scout_build_name: QaBuild
+      scout_checkout_ref: ${{ needs.init_vars_job.outputs.scout_checkout_ref }}
+      scout_build_name: ${{ needs.init_vars_job.outputs.scout_build_name }}

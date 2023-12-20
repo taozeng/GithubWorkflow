@@ -12,7 +12,7 @@ env:
   
 jobs:
   init_vars_job:
-    name: Initialize scout variables
+    name: Initialize Variable
     runs-on: ubuntu-latest
     steps:
       - run: |
@@ -20,7 +20,7 @@ jobs:
           echo "scout_build_name={{ env.BUILD_NAME }}" >> $GITHUB_OUTPUT    
   call_workflow_job:
     needs: init_vars_job
-    name: Generate EngineeringBuild
+    name: Generate ${{ needs.init_vars_job.outputs.scout_build_name }}
     permissions:
       actions: read
       contents: read
