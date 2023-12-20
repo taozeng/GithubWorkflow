@@ -25,24 +25,21 @@ permissions:
   contents: read
   
 jobs:
-  initJob:
-    runs-on: ubuntu-latest
-    name: Init Job
-    steps:
-      - name: copy outputs
-        id: step_vars
-        run: |
-          echo "build_name: ${{ inputs.build_name || 'EngineeringBuild' }}"
-          echo "checkout_ref: ${{ inputs.checkout_ref || 'main' }}"
-          
   myJob:
     runs-on: ubuntu-latest
     name: My Job
     needs: initJob
+    env:
+      build_name: ${{ inputs.build_name || 'EngineeringBuild' }}
+      checkout_ref: ${{ inputs.checkout_ref || 'main' }}
     steps:
+      - name: show vars
+        run: |
+          echo "build_name: ${{ env.build_name }}"
+          echo "checkout_ref: ${{ env.checkout_ref }}"
       - uses: actions/checkout@v3
         with:
-          ref: ${{ inputs.checkout_ref }}
+          ref: ${{ env.checkout_ref }}
           # We need to fetch all branches and commits so that Nx affected has a base to compare against.
           fetch-depth: 0
 
