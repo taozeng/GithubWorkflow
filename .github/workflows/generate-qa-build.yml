@@ -1,5 +1,8 @@
 name: Generate QA Build
 
+on:
+  workflow_dispatch:
+    
 env:
   CHECKOUT_REF: build/qa
   BUILD_NAME: QaBuild
@@ -14,7 +17,7 @@ jobs:
           echo "scout_build_name={{ env.BUILD_NAME }}" >> $GITHUB_OUTPUT    
   call_workflow_job:
     needs: init_vars_job
-    name: Generate ${{ needs.init_vars_job.outputs.scout_build_name }}
+    name: Generate Applications
     permissions:
       actions: read
       contents: read

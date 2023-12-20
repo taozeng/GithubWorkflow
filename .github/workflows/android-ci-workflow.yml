@@ -1,4 +1,4 @@
-name: Reusable workflow to create Android applications
+name: Reusable workflow to build Android applications
 
 on:
   workflow_call:
