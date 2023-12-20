@@ -29,16 +29,16 @@ jobs:
     runs-on: ubuntu-latest
     name: My Job
     env:
-      build_name: ${{ inputs.build_name || 'EngineeringBuild' }}
-      checkout_ref: ${{ inputs.checkout_ref || 'main' }}
+      BUILD_NAME: ${{ inputs.build_name || 'EngineeringBuild' }}
+      CHECKOUT_REF: ${{ inputs.checkout_ref || 'main' }}
     steps:
       - name: show vars
         run: |
-          echo "build_name: ${{ env.build_name }}"
-          echo "checkout_ref: ${{ env.checkout_ref }}"
+          echo "build_name: ${{ env.BUILD_NAME }}"
+          echo "checkout_ref: ${{ env.CHECKOUT_REF }}"
       - uses: actions/checkout@v3
         with:
-          ref: ${{ env.checkout_ref }}
+          ref: ${{ env.CHECKOUT_REF }}
           # We need to fetch all branches and commits so that Nx affected has a base to compare against.
           fetch-depth: 0
 
