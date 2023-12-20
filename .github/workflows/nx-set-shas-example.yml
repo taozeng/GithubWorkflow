@@ -1,9 +1,5 @@
 name: NX sha examples
 
-env:
-  CHECKOUT_REF: main
-  BUILD_NAME: EngineeringBuild
-  
 on:
   push:
     branches:
@@ -14,7 +10,7 @@ on:
         description: 'Build Name'
         required: false
         type: choice
-        default: ${{ env.BUILD_NAME }}
+        default: "EngineeringBuild"
         options:
         - "EngineeringBuild"
         - "QaBuild"
@@ -22,7 +18,7 @@ on:
         description: 'Checkout branch, tag or SHA'
         required: false
         type: string
-        default: ${{ env.CHECKOUT_REF }}        
+        default: "main"        
 
 permissions:
   actions: read
@@ -36,8 +32,8 @@ jobs:
       - name: copy outputs
         id: step_vars
         run: |
-          echo "build_name: ${{ inputs.build_name || env.BUILD_NAME }}"
-          echo "checkout_ref: ${{ inputs.checkout_ref || env.CHECKOUT_REF }}"
+          echo "build_name: ${{ inputs.build_name || 'EngineeringBuild' }}"
+          echo "checkout_ref: ${{ inputs.checkout_ref || 'main' }}"
           
   myJob:
     runs-on: ubuntu-latest
