@@ -16,14 +16,15 @@ on:
         scout_github_token:
           description: 'An optional github token, required if triggered by workflow_dispatch'
           required: true
-      
+
+permissions:
+  actions: read
+  contents: read
+  
 jobs:
   build_job:
     name: Build
     runs-on: ubuntu-22.04
-    permissions:
-      actions: read
-      contents: read
     steps:
     - name: Print build environment
       run:
