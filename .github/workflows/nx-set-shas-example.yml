@@ -12,7 +12,7 @@ on:
         - "EngineeringBuild"
         - "QaBuild"
       checkout_ref:
-        description: 'A branch, tag or SHA to checkout the code'
+        description: 'Checkout branch, tag or SHA'
         required: false
         type: string
         default: "main"        
