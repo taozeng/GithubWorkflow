@@ -12,7 +12,7 @@ env:
   
 jobs:
   init_vars_job:
-    name: Initialize Variable
+    name: Initialize Variables
     runs-on: ubuntu-latest
     steps:
       - run: |
