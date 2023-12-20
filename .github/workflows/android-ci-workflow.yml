@@ -12,7 +12,11 @@ on:
           required: false
           type: string
           default: 'Build'
-  
+      outputs:
+        scout_artifact_name:
+          description: 'The file name of the generated artifact'
+          value: ${{ env.scout_version_code }}
+
 jobs:
   build-job:
     name: Build

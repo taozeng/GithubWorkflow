@@ -53,5 +53,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo "VERSION CODE: ${{ env.scout_version_code }}"
-          ls
+          echo "ARTIFACT NAME: ${{ needs.call_workflow_job.outputs.scout_artifact_name }}"          
+      - shell: bash
+        run: |
+          ls -l
