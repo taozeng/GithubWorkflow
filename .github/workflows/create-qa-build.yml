@@ -1,4 +1,4 @@
-name: Create Engineering Build
+name: Create QA Build
 
 on:
   schedule:
