@@ -1,0 +1,27 @@
+name: Generate Production Build
+
+on:
+  workflow_dispatch:
+
+env:
+  CHECKOUT_REF: release
+  BUILD_NAME: ProductionBuild
+
+jobs:
+  init_vars_job:
+    name: Initialize Variables
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "scout_checkout_ref={{ env.CHECKOUT_REF }} " >> $GITHUB_OUTPUT
+          echo "scout_build_name={{ env.BUILD_NAME }}" >> $GITHUB_OUTPUT    
+  call_workflow_job:
+    needs: init_vars_job
+    name: Generate Applications
+    permissions:
+      actions: read
+      contents: read
+    uses: ./.github/workflows/android-ci-workflow.yml
+    with:
+      scout_checkout_ref: ${{ needs.init_vars_job.outputs.scout_checkout_ref }}
+      scout_build_name: ${{ needs.init_vars_job.outputs.scout_build_name }}

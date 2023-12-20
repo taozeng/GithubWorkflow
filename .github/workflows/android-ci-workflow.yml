@@ -1,4 +1,4 @@
-name: Reusable workflow to create Android applications
+name: Reusable workflow to build Android applications
 
 on:
   workflow_call:
@@ -12,13 +12,9 @@ on:
           required: false
           type: string
           default: 'Build'
-      secrets:
-        scout_github_token:
-          description: 'An optional github token, required if triggered by workflow_dispatch'
-          required: true
-
+  
 jobs:
-  build_job:
+  build-job:
     name: Build
     runs-on: ubuntu-22.04
     steps:
@@ -56,25 +52,20 @@ jobs:
         name: ${{ inputs.scout_build_name }}.${{ env.scout_version_code }}.${{ env.scout_build_datetime }}.${{ env.scout_sha_short }}
         path: app/build/outputs/*
     - name: Find last successful build
-      uses: SamhammerAG/last-successful-build-action@v4
-      id: last_successful_commit
-      with:
-        token: ${{ secrets.scout_github_token }}
-        branch: ${{ inputs.scout_checkout_ref }}
-        workflow: ${{ github.workflow }}
-        verify: true 
+      id: nx_set_shas
+      uses: nrwl/nx-set-shas@v4        
     - name: Generate changelog
       id: changelog
       uses: metcalfc/changelog-generator@v4.2.0
       with:
-        head-ref: ${{ env.scout_sha_long }}
-        base-ref: ${{ steps.last_successful_commit.outputs.sha }}
-        myToken: ${{ secrets.scout_github_token }}
+        head-ref: ${{ steps.nx_set_shas.outputs.head }}
+        base-ref: ${{ steps.nx_set_shas.outputs.base }}
+        myToken: ${{ secrets.GITHUB_TOKEN }}
         fetch: false
     - name: Add build summary
       run: |
-        echo "**Git Repository:** https://github.com/${{ github.repository }}/tree/${{ env.scout_sha_long }}  " >> $GITHUB_STEP_SUMMARY
-        echo "**Git revision:** ${{ env.scout_sha_long }}  " >> $GITHUB_STEP_SUMMARY
-        echo "**Git reference:** ${{ env.scout_full_ref }}  " >> $GITHUB_STEP_SUMMARY
+        echo "#### Version code: ${{ env.scout_version_code }}" >> $GITHUB_STEP_SUMMARY
+        echo "- Git Repository: https://github.com/${{ github.repository }}/tree/${{ env.scout_sha_long }}  " >> $GITHUB_STEP_SUMMARY
+        echo "- Git reference: ${{ env.scout_full_ref }}  " >> $GITHUB_STEP_SUMMARY
         echo "#### Changelog since the last successful build" >> $GITHUB_STEP_SUMMARY
         echo "${{ steps.changelog.outputs.changelog }}" >> $GITHUB_STEP_SUMMARY

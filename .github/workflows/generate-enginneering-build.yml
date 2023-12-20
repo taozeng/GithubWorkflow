@@ -1,0 +1,30 @@
+name: Generate Engineering Build
+
+on:
+  push:
+    branches: 
+      - 'main'
+    workflow_dispatch:
+
+env:
+  CHECKOUT_REF: main
+  BUILD_NAME: EngineeringBuild
+  
+jobs:
+  init_vars_job:
+    name: Initialize Variables
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "scout_checkout_ref={{ env.CHECKOUT_REF }} " >> $GITHUB_OUTPUT
+          echo "scout_build_name={{ env.BUILD_NAME }}" >> $GITHUB_OUTPUT    
+  call_workflow_job:
+    needs: init_vars_job
+    name: Generate Applications
+    permissions:
+      actions: read
+      contents: read
+    uses: ./.github/workflows/android-ci-workflow.yml
+    with:
+      scout_checkout_ref: ${{ needs.init_vars_job.outputs.scout_checkout_ref }}
+      scout_build_name: ${{ needs.init_vars_job.outputs.scout_build_name }}
