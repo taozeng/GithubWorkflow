@@ -1,6 +1,9 @@
 name: Android CI
 
 on:
+  schedule:
+    # run everyday at 20:30 UTC (04:30 PST)
+    - cron:  '30 20 * * *'
   workflow_dispatch:
     
 env:
@@ -8,7 +11,7 @@ env:
   SCOUT_CHECKOUT_REF: main
 
 jobs:
-  build:
+  build_job:
 
     runs-on: ubuntu-22.04
 
@@ -53,3 +56,26 @@ jobs:
       with:
         name: ${{ env.SCOUT_BUILD_NAME }}.${{ env.version_code }}.${{ env.build_datetime }}.${{ env.sha_short }}
         path: app/build/outputs/*
+
+    - name: Find last successful build
+      uses: SamhammerAG/last-successful-build-action@v4
+      id: last_successful_commit
+      with:
+        token: ${{ secrets.MY_GITHUB_TOKEN }}
+        branch: ${{ env.SCOUT_CHECKOUT_REF }}
+        workflow: "Android CI"
+        verify: true 
+
+    - name: Generate changelog
+      id: changelog
+      uses: metcalfc/changelog-generator@v4.2.0
+      with:
+        myToken: ${{ secrets.MY_GITHUB_TOKEN }}
+        head-ref: HEAD
+        base-ref: ${{ steps.last_successful_commit.outputs.sha }}
+        fetch: false
+      
+    - name: Adding summary
+      run: |
+        echo "#### ${{ env.SCOUT_BUILD_NAME }} - Changelog since the last successful build" >> $GITHUB_STEP_SUMMARY
+        echo "${{ steps.changelog.outputs.changelog }}" >> $GITHUB_STEP_SUMMARY

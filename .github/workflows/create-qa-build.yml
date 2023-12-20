@@ -1,0 +1,14 @@
+name: Create QA Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  call-workflow:
+    name: Create QaBuild
+    uses: ./.github/workflows/android-ci-workflow.yml
+    with:
+      scout_checkout_ref: build/qa
+      scout_build_name: QaBuild
+    secrets:
+      scout_github_token: ${{ secrets.MY_GITHUB_TOKEN }}
