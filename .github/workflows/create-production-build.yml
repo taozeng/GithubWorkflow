@@ -11,4 +11,4 @@ jobs:
       scout_checkout_ref: release
       scout_build_name: ProductionBuild
     secrets:
-      scout_github_token: ${{ secrets.MY_GITHUB_TOKEN }}
+      scout_github_token: ${{ secrets.GITHUB_TOKEN }}
