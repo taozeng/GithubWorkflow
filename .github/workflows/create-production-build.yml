@@ -1,0 +1,14 @@
+name: Create Production Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  call-workflow:
+    name: Create ProductionBuild
+    uses: ./.github/workflows/android-ci-workflow.yml
+    with:
+      scout_checkout_ref: release
+      scout_build_name: ProductionBuild
+    secrets:
+      scout_github_token: ${{ secrets.MY_GITHUB_TOKEN }}
