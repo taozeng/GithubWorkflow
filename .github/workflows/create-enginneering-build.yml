@@ -15,7 +15,7 @@ jobs:
     name: Create EngineeringBuild
     uses: ./.github/workflows/android-ci-workflow.yml
     with:
-      scout_checkout_ref: ${{ env.SCOUT_CHECKOUT_REF }}
-      scout_build_name: ${{ env.SCOUT_BUILD_NAME }}
+      scout_checkout_ref: $SCOUT_CHECKOUT_REF
+      scout_build_name: $SCOUT_BUILD_NAME
     secrets:
       scout_github_token: ${{ secrets.MY_GITHUB_TOKEN }}
