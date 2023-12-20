@@ -69,7 +69,7 @@ jobs:
       with:
         head-ref: ${{ env.scout_sha_long }}
         base-ref: ${{ steps.last_successful_commit.outputs.sha }}
-        myToken: ${{ secrets.scout_github_token }}
+        myToken: ${{ secrets.GITHUB_TOKEN }}
         fetch: false
     - name: Add build summary
       run: |
