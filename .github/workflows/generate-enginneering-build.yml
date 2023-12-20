@@ -13,6 +13,7 @@ env:
 jobs:
   init-vars-job:
     name: Initialize global variables
+    runs-on: ubuntu-latest
     steps:
       - run: |
           echo "{{ env.checkout_ref }}"
