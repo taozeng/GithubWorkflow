@@ -60,6 +60,7 @@ jobs:
       with:
         head-ref: ${{ steps.nx_set_shas.outputs.head }}
         base-ref: ${{ steps.nx_set_shas.outputs.base }}
+        myToken: ${{ secrets.GITHUB_TOKEN }}
         fetch: false
     - name: Add build summary
       run: |
