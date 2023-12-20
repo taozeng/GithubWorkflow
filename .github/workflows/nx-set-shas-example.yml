@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       build_name:
+        description: 'Build Name'
         required: false
         type: choice
         default: "EngineeringBuild"
@@ -11,6 +12,7 @@ on:
         - "EngineeringBuild"
         - "QaBuild"
       checkout_ref:
+        description: 'A branch, tag or SHA to checkout the code'
         required: false
         type: string
         default: "main"        
