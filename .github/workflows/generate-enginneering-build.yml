@@ -21,8 +21,8 @@ jobs:
       - name: copy outputs
         id: vars_step
         run: |
-          echo "checkout_ref={{ env.CHECKOUT_REF }} " >> $GITHUB_OUTPUT
-          echo "build_name={{ env.BUILD_NAME }}" >> $GITHUB_OUTPUT    
+          echo "checkout_ref=${{ env.CHECKOUT_REF }} " >> $GITHUB_OUTPUT
+          echo "build_name=${{ env.BUILD_NAME }}" >> $GITHUB_OUTPUT    
   call_workflow_job:
     needs: init_vars_job
     name: Generate Applications
