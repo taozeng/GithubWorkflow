@@ -16,7 +16,11 @@ on:
         scout_github_token:
           description: 'An optional github token, required if triggered by workflow_dispatch'
           required: true
-
+  
+permissions:
+  actions: read
+  contents: read
+    
 jobs:
   build_job:
     name: Build
@@ -56,19 +60,14 @@ jobs:
         name: ${{ inputs.scout_build_name }}.${{ env.scout_version_code }}.${{ env.scout_build_datetime }}.${{ env.scout_sha_short }}
         path: app/build/outputs/*
     - name: Find last successful build
-      uses: SamhammerAG/last-successful-build-action@v4
-      id: last_successful_commit
-      with:
-        token: ${{ secrets.scout_github_token }}
-        branch: ${{ inputs.scout_checkout_ref }}
-        workflow: ${{ github.workflow }}
-        verify: true 
+      id: nx_set_shas
+      uses: nrwl/nx-set-shas@v4        
     - name: Generate changelog
       id: changelog
       uses: metcalfc/changelog-generator@v4.2.0
       with:
-        head-ref: ${{ env.scout_sha_long }}
-        base-ref: ${{ steps.last_successful_commit.outputs.sha }}
+        head-ref: ${{ steps.nx_set_shas.outputs.head }}
+        base-ref: ${{ steps.nx_set_shas.outputs.base }}
         myToken: ${{ secrets.GITHUB_TOKEN }}
         fetch: false
     - name: Add build summary
