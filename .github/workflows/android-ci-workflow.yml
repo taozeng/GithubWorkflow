@@ -16,10 +16,6 @@ on:
         scout_github_token:
           description: 'An optional github token, required if triggered by workflow_dispatch'
           required: true
-
-permissions:
-  actions: read
-  contents: read
   
 jobs:
   build_job:
