@@ -4,6 +4,7 @@ on:
   push:
     branches: 
       - 'main'
+    workflow_dispatch:
 
 jobs:
   call-workflow:
@@ -15,5 +16,3 @@ jobs:
     with:
       scout_checkout_ref: main
       scout_build_name: EngineeringBuild
-    secrets:
-      scout_github_token: ${{ secrets.SCOUT_BUILD_TOKEN }}

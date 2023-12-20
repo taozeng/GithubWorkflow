@@ -6,9 +6,10 @@ on:
 jobs:
   call-workflow:
     name: Generate QaBuild
+    permissions:
+      actions: read
+      contents: read
     uses: ./.github/workflows/android-ci-workflow.yml
     with:
       scout_checkout_ref: build/qa
       scout_build_name: QaBuild
-    secrets:
-      scout_github_token: ${{ secrets.SCOUT_BUILD_TOKEN }}

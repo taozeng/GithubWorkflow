@@ -12,10 +12,6 @@ on:
           required: false
           type: string
           default: 'Build'
-      secrets:
-        scout_github_token:
-          description: 'An optional github token, required if triggered by workflow_dispatch'
-          required: true
   
 jobs:
   build_job:
@@ -64,7 +60,6 @@ jobs:
       with:
         head-ref: ${{ steps.nx_set_shas.outputs.head }}
         base-ref: ${{ steps.nx_set_shas.outputs.base }}
-        myToken: ${{ secrets.GITHUB_TOKEN }}
         fetch: false
     - name: Add build summary
       run: |

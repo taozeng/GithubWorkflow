@@ -6,9 +6,10 @@ on:
 jobs:
   call-workflow:
     name: Generate ProductionBuild
+    permissions:
+      actions: read
+      contents: read
     uses: ./.github/workflows/android-ci-workflow.yml
     with:
       scout_checkout_ref: release
       scout_build_name: ProductionBuild
-    secrets:
-      scout_github_token: ${{ secrets.SCOUT_BUILD_TOKEN }}
