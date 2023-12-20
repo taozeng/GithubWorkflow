@@ -18,6 +18,10 @@ jobs:
     name: Build
     runs-on: ubuntu-22.04
     steps:
+    - name: Print inputs
+      run: |
+        echo "scout_checkout_ref=${{ inputs.scout_checkout_ref }}"
+        echo "scout_build_name=${{ inputs.scout_build_name }}"
     - name: Print build environment
       run:
         env | sort      
