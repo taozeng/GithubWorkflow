@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  call-workflow:
+  call-workflow-job:
     name: Generate ProductionBuild
     permissions:
       actions: read

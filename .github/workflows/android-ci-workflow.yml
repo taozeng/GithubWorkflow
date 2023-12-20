@@ -14,7 +14,7 @@ on:
           default: 'Build'
   
 jobs:
-  build_job:
+  build-job:
     name: Build
     runs-on: ubuntu-22.04
     steps:
