@@ -73,8 +73,8 @@ jobs:
         fetch: false
     - name: Add build summary
       run: |
-        echo "**Git Repository:** https://github.com/${{ github.repository }}/tree/${{ env.scout_sha_long }}  " >> $GITHUB_STEP_SUMMARY
-        echo "**Git revision:** ${{ env.scout_sha_long }}  " >> $GITHUB_STEP_SUMMARY
-        echo "**Git reference:** ${{ env.scout_full_ref }}  " >> $GITHUB_STEP_SUMMARY
+        echo "#### Version code: ${{ env.scout_version_code }}" >> $GITHUB_STEP_SUMMARY
+        echo "- Git Repository:** https://github.com/${{ github.repository }}/tree/${{ env.scout_sha_long }}  " >> $GITHUB_STEP_SUMMARY
+        echo "- Git reference:** ${{ env.scout_full_ref }}  " >> $GITHUB_STEP_SUMMARY
         echo "#### Changelog since the last successful build" >> $GITHUB_STEP_SUMMARY
         echo "${{ steps.changelog.outputs.changelog }}" >> $GITHUB_STEP_SUMMARY
