@@ -1,6 +1,9 @@
 name: NX sha examples
 
 on:
+  push:
+    branches:
+      - 'main'
   workflow_dispatch:
     inputs:
       build_name:
