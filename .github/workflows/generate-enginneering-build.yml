@@ -62,5 +62,5 @@ jobs:
       - run: | 
           echo 'TODO - archive to S3'
       - run: |
-          echo "#### This build artifact is archived at [Amazon S3 Bucket](${{ needs.call_workflow_job.outputs.scout_artifact_name }})" >> $GITHUB_STEP_SUMMARY
+          echo "#### This build artifact is archived at [Amazon S3 Bucket](https://s3.amazon.com/myBucket/${{ needs.init_vars_job.outputs.scout_build_name }}/${{ needs.call_workflow_job.outputs.scout_artifact_name }})" >> $GITHUB_STEP_SUMMARY
           
