@@ -7,24 +7,28 @@ on:
     workflow_dispatch:
 
 env:
-  checkout_ref: main
-  build_name: EngineeringBuild
+  CHECKOUT_REF: main
+  BUILD_NAME: EngineeringBuild
   
 jobs:
-  init-vars-job:
-    name: Initialize global variables
+  init_vars_job:
+    name: Initialize scout variables
     runs-on: ubuntu-latest
+    outputs:
+      scout_checkout_ref: ${{ steps.vars_steps.outputs.scout_checkout_ref }}
+      scout_build_name: ${{ steps.vars_steps.outputs.scout_build_name }}
     steps:
+      - id: vars_steps
       - run: |
-          echo "{{ env.checkout_ref }} " >> $GITHUB_ENV
-          echo "{{ env.build_name }}" >> $GITHUB_ENV
-    
-  call-workflow-job:
-    name: Generate ${{ env.build_name }}
+          echo "scout_checkout_ref={{ env.CHECKOUT_REF }} " >> $GITHUB_OUTPUT
+          echo "scout_build_name={{ env.BUILD_NAME }}" >> $GITHUB_OUTPUT    
+  call_workflow_job:
+    needs: init_vars_job
+    name: Generate ${{ needs.init_vars_job.outputs.scout_build_name }}
     permissions:
       actions: read
       contents: read
     uses: ./.github/workflows/android-ci-workflow.yml
     with:
-      scout_checkout_ref: ${{ env.checkout_ref }}
-      scout_build_name: ${{ env.build_name }}
+      scout_checkout_ref: ${{ needs.init_vars_job.outputs.scout_checkout_ref }}
+      scout_build_name: ${{ needs.init_vars_job.outputs.scout_build_name }}
