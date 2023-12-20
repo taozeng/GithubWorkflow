@@ -49,11 +49,15 @@ jobs:
       scout_build_name: ${{ needs.init_vars_job.outputs.scout_build_name }}
   archive_artifact_job:
     needs: call_workflow_job
-    name: Archive Artifacts
+    name: Archive Artifact
     runs-on: ubuntu-latest
     steps:
-      - run: echo 'Archive artifacts ${{ needs.call_workflow_job.outputs.scout_artifact_name }}'          
       - name: Download artifact
         uses: actions/download-artifact@v4.1.0
         with:
           name: ${{ needs.call_workflow_job.outputs.scout_artifact_name }}  
+      - run: | 
+          echo 'TODO - archive to S3'
+      - run: |
+          echo "#### This build artifact is archived at [Amazon S3 Bucket](${{ needs.call_workflow_job.outputs.scout_artifact_name }})" >> $GITHUB_STEP_SUMMARY
+          
