@@ -16,8 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo "{{ env.checkout_ref }}"
-          echo "{{ env.build_name }}"
+          echo "{{ env.checkout_ref }} " >> $GITHUB_ENV
+          echo "{{ env.build_name }}" >> $GITHUB_ENV
     
   call-workflow-job:
     name: Generate ${{ env.build_name }}
@@ -26,5 +26,5 @@ jobs:
       contents: read
     uses: ./.github/workflows/android-ci-workflow.yml
     with:
-      scout_checkout_ref: ${{ checkout_ref }}
-      scout_build_name: ${{ build_name }}
+      scout_checkout_ref: ${{ env.checkout_ref }}
+      scout_build_name: ${{ env.build_name }}
