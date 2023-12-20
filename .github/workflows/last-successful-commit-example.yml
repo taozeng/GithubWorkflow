@@ -1,6 +1,7 @@
 name: Deploy Website
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -11,7 +12,6 @@ jobs:
     name: Deploying affected apps
     steps:
       - uses: actions/checkout@v4
-      - uses: bahmutov/npm-install@v1.4.5
       - uses: PatrikValkovic/last-successful-commit-action@v3.1
         id: last_successful_commit
         with:
