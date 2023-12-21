@@ -1,8 +1,9 @@
-name: Test Ookla S3 Read
+name: Test Copy From Ookla S3
 on: 
   push:
     branches:
       - 'main'
+
 env:
   FILE_NAME: 's3://ookla-android-maven-repo/release/com/ookla/speedtest/sdk/speedtest-sdk/2.5.3.8/speedtest-sdk-2.5.3.8.pom'
 
