@@ -3,8 +3,7 @@ run-name: ${{ github.actor }} is running simple release action
 on: 
   push:
     branches:
-      - 'main'
-  workflow_dispatch:
+      - 'release'
 jobs:
   check-action:
     runs-on: ubuntu-latest
