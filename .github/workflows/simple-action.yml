@@ -1,9 +1,10 @@
 name: simple-release-github-actions
 run-name: ${{ github.actor }} is running simple release action
-on: 
+on:
   push:
     branches:
-      - 'release'
+      - 'main'
+  workflow_dispatch:
 jobs:
   check-action:
     runs-on: ubuntu-latest
