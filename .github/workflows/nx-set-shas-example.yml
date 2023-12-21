@@ -27,7 +27,6 @@ permissions:
 jobs:
   myJob:
     runs-on: ubuntu-latest
-    name: My Job
     env:
       BUILD_NAME: ${{ inputs.build_name || 'EngineeringBuild' }}
       CHECKOUT_REF: ${{ inputs.checkout_ref || 'main' }}
