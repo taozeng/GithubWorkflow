@@ -1,22 +1,56 @@
 name: NX sha examples
 
 on:
+  push:
+    branches:
+      - 'main'
   workflow_dispatch:
+    inputs:
+      build_name:
+        description: 'Build Name'
+        required: false
+        type: choice
+        default: 'EngineeringBuild'
+        options:
+        - 'EngineeringBuild'
+        - 'QaBuild'
+      checkout_ref:
+        description: 'Checkout branch, tag or SHA'
+        required: false
+        type: string
+        default: 'main'        
 
 permissions:
   actions: read
   contents: read
+
+env:
+  BUCKET_NAME: 's3://myBucket/ProductionBuild/file_from_gh.txt'
+  FILE_NAME: 'file_from_gh.txt'
   
 jobs:
-  myjob:
+  myJob:
     runs-on: ubuntu-latest
     name: My Job
+    env:
+      BUILD_NAME: ${{ inputs.build_name || 'EngineeringBuild' }}
+      CHECKOUT_REF: ${{ inputs.checkout_ref || 'main' }}
     steps:
+      - name: show vars
+        run: |
+          echo "build_name: ${{ env.BUILD_NAME }}"
+          echo "checkout_ref: ${{ env.CHECKOUT_REF }}"
       - uses: actions/checkout@v3
         with:
+          ref: ${{ env.CHECKOUT_REF }}
           # We need to fetch all branches and commits so that Nx affected has a base to compare against.
           fetch-depth: 0
-
+      
+      - name: Test permission
+        run: |
+          echo "$(date +'%Y%m%d-%H%M%S')" >> ${{ env.FILE_NAME }}
+          cat ${{ env.FILE_NAME }}
+          
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         id: setSHAs
         uses: nrwl/nx-set-shas@v4

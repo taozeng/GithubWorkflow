@@ -12,12 +12,22 @@ on:
           required: false
           type: string
           default: 'Build'
-  
+      outputs:
+        scout_artifact_name:
+          description: 'The file name of the generated artifact'
+          value: ${{ jobs.build-job.outputs.artifact_name }}
+
 jobs:
   build-job:
     name: Build
     runs-on: ubuntu-22.04
+    outputs:
+      artifact_name: ${{ steps.generate_artifact_name.outputs.artifact_name }}
     steps:
+    - name: Print inputs
+      run: |
+        echo "scout_checkout_ref=${{ inputs.scout_checkout_ref }}"
+        echo "scout_build_name=${{ inputs.scout_build_name }}"
     - name: Print build environment
       run:
         env | sort      
@@ -36,20 +46,19 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Generate version code
-      run: ./generateVersionCode.sh
-    - name: Set github variables
-      run: | 
-        echo "scout_build_datetime=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_ENV
-        echo "scout_sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-        echo "scout_sha_long=$(git rev-parse HEAD)" >> $GITHUB_ENV
-        echo "scout_full_ref=$(git describe --all)" >> $GITHUB_ENV
+      run: |
+        ./generateVersionCode.sh
         echo "scout_version_code=$(cat versionCode.txt)" >> $GITHUB_ENV
     - name: Build with Gradle
       run: ./gradlew clean assemble
-    - name: Upload artifacts
+    - name: Generate artifact name
+      id: generate_artifact_name
+      run: |
+        echo "artifact_name=${{ inputs.scout_build_name }}.${{ env.scout_version_code }}.$(date +'%Y%m%d-%H%M%S').$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+    - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ inputs.scout_build_name }}.${{ env.scout_version_code }}.${{ env.scout_build_datetime }}.${{ env.scout_sha_short }}
+        name: ${{ steps.generate_artifact_name.outputs.artifact_name }}
         path: app/build/outputs/*
     - name: Find last successful build
       id: nx_set_shas
@@ -65,7 +74,7 @@ jobs:
     - name: Add build summary
       run: |
         echo "#### Version code: ${{ env.scout_version_code }}" >> $GITHUB_STEP_SUMMARY
-        echo "- Git Repository: https://github.com/${{ github.repository }}/tree/${{ env.scout_sha_long }}  " >> $GITHUB_STEP_SUMMARY
-        echo "- Git reference: ${{ env.scout_full_ref }}  " >> $GITHUB_STEP_SUMMARY
+        echo "- Git Repository: https://github.com/${{ github.repository }}/tree/$(git rev-parse HEAD)  " >> $GITHUB_STEP_SUMMARY
+        echo "- Git reference: $(git describe --all)  " >> $GITHUB_STEP_SUMMARY
         echo "#### Changelog since the last successful build" >> $GITHUB_STEP_SUMMARY
         echo "${{ steps.changelog.outputs.changelog }}" >> $GITHUB_STEP_SUMMARY
