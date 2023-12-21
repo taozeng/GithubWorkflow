@@ -11,7 +11,8 @@ on:
     
 env:
   OOKLA_REMOTE_FILE: 's3://ookla-android-maven-repo/release/com/ookla/speedtest/sdk/speedtest-sdk/2.5.3.8/speedtest-sdk-2.5.3.8.pom'
-  ROOT_BUCKET: 's3://client-build-achieves/'
+  ROOT_REMOTE_BUCKET: 's3://client-build-achieves/'
+  ROOT_REMOTE_FOLDER: 'Build/'
   LOCAL_FILE: 'file_from_gh.txt'
 
 jobs:
@@ -23,8 +24,6 @@ jobs:
       id-token: write
       contents: read
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
       - name: Create local file
         run: |
           echo "$(date +'%Y%m%d-%H%M%S')" >> ${{ env.LOCAL_FILE }}
@@ -32,7 +31,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::111111111111:role/my-github-actions-role-test
-          aws-region: us-east-1
+          aws-region: us-west-2
       - name: Copy files from Ookla with the AWS CLI
         run: |
           aws s3 cp ${{ env.OOKLA_REMOTE_FILE}} .
@@ -43,4 +42,4 @@ jobs:
           aws-region: us-west-2
       - name: Copy files to the RootMetrics bucket with the AWS CLI
         run: |
-          aws s3 cp ${{ env.LOCAL_FILE }} ${{ env.ROOT_BUCKET }}
+          aws s3 cp ${{ env.LOCAL_FILE }} ${{ env.ROOT_REMOTE_BUCKET }}${{ env.ROOT_REMOTE_FOLDER }}
