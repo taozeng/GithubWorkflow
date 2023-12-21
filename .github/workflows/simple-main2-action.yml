@@ -9,6 +9,7 @@ on:
     
 jobs:
   check-action:
+    name: Check env
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
