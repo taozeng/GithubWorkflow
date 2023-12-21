@@ -1,0 +1,30 @@
+name: Test Copy To Root S3
+on: 
+  push:
+    branches:
+      - 'main'
+
+env:
+  BUCKET_NAME: 's3://myBucket/ProductionBuild/file_from_gh.txt'
+  FILE_NAME: 'file_from_gh.txt'
+
+jobs:
+  cp_from_s3:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Files
+        uses: actions/checkout@v4
+      
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets. AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets. AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-1
+          
+      - name: Test permission
+        run: |
+          echo "$(date +'%Y%m%d-%H%M%S')" >> ${{ env.FILE_NAME }}
+          cat ${{ env.FILE_NAME }}
+          aws s3 cp ${{ env.FILE_NAME }} ${{ env.BUCKET }}
+          
