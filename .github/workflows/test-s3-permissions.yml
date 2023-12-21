@@ -1,0 +1,46 @@
+#
+# please refer to https://github.com/aws-actions/configure-aws-credentials
+#
+name: Test S3
+
+on: 
+  push:
+    branches:
+      - 'main'
+  workflow_dispatch:
+    
+env:
+  OOKLA_REMOTE_FILE: 's3://ookla-android-maven-repo/release/com/ookla/speedtest/sdk/speedtest-sdk/2.5.3.8/speedtest-sdk-2.5.3.8.pom'
+  ROOT_BUCKET: 's3://client-build-achieves/'
+  LOCAL_FILE: 'file_from_gh.txt'
+
+jobs:
+  test_s3:
+    name: Test Amazon S3
+    runs-on: ubuntu-latest
+    # These permissions are needed to interact with GitHub's OIDC Token endpoint.
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Create local file
+        run: |
+          echo "$(date +'%Y%m%d-%H%M%S')" >> ${{ env.LOCAL_FILE }}
+      - name: Configure AWS credentials from Ookla account
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::111111111111:role/my-github-actions-role-test
+          aws-region: us-east-1
+      - name: Copy files from Ookla with the AWS CLI
+        run: |
+          aws s3 cp ${{ env.OOKLA_REMOTE_FILE}} .
+      - name: Configure AWS credentials from RootMetrics account
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::222222222222:role/my-github-actions-role-prod
+          aws-region: us-west-2
+      - name: Copy files to the RootMetrics bucket with the AWS CLI
+        run: |
+          aws s3 cp ${{ env.LOCAL_FILE }} ${{ env.ROOT_BUCKET }}
