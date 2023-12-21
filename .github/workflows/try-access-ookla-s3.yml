@@ -4,7 +4,7 @@ on:
     branches:
       - 'main'
 env:
-  FILE_NAME: 'cp s3://ookla-android-maven-repo/release/com/ookla/speedtest/sdk/speedtest-sdk/2.5.3.8/speedtest-sdk-2.5.3.8.pom'
+  FILE_NAME: 's3://ookla-android-maven-repo/release/com/ookla/speedtest/sdk/speedtest-sdk/2.5.3.8/speedtest-sdk-2.5.3.8.pom'
 jobs:
   check-bats-version:
     runs-on: ubuntu-latest
