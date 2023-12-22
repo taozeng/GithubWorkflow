@@ -24,11 +24,9 @@ jobs:
       actions: read
       contents: read
     uses: ./.github/workflows/android-ci-workflow.yml
-    env:
-      build_name: 'EngineeringBuild'
     with:
       scout_checkout_ref: ${{ inputs.checkout_ref }}
-      scout_build_name: ${{ env.build_name }}
+      scout_build_name: 'EngineeringBuild'
   archive_artifact_job:
     name: Archive
     needs:
