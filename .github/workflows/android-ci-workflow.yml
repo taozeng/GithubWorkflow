@@ -77,6 +77,6 @@ jobs:
         path: app/build/outputs/*
     - name: Add build summary
       run: |
-        echo "#### ${{ build_name }} Version code: ${{ env.scout_version_code }}" >> $GITHUB_STEP_SUMMARY
+        echo "#### ${{ inputs.build_name }} Version code: ${{ env.scout_version_code }}" >> $GITHUB_STEP_SUMMARY
         echo "- Git Repository: https://github.com/${{ github.repository }}/tree/$(git rev-parse HEAD)  " >> $GITHUB_STEP_SUMMARY
         echo "- Git reference: $(git describe --all)  " >> $GITHUB_STEP_SUMMARY
