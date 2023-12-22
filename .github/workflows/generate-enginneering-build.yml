@@ -25,8 +25,8 @@ jobs:
       contents: read
     uses: ./.github/workflows/android-ci-workflow.yml
     with:
-      scout_checkout_ref: ${{ inputs.checkout_ref }}
       scout_build_name: 'EngineeringBuild'
+      scout_checkout_ref: ${{ inputs.checkout_ref }}
   archive_artifact_job:
     name: Archive
     needs:
@@ -34,8 +34,8 @@ jobs:
     if: ${{ inputs.should_archive }}
     runs-on: ubuntu-latest
     env:
+      bucket_name: 'https://s3.amazon.com/MyBucket'
       build_name: 'EngineeringBuild'
-      bucket_name: 'MyBucket'
       artifact_name: ${{ needs.call_workflow_job.outputs.scout_artifact_name }}
     steps:
       - name: Download artifact
@@ -48,5 +48,5 @@ jobs:
           echo "s3_path=${{ env.build_name }}/${{ env.artifact_name }}" >> $GITHUB_ENV
       - name: Add build summary
         run: |
-          echo "#### This build artifact is archived at [Amazon S3 Bucket (TODO)](https://s3.amazon.com/${{ env.bucket_name }}/${{ env.s3_path }})" >> $GITHUB_STEP_SUMMARY
+          echo "#### This build artifact is archived at [Amazon S3 Bucket (TODO)](${{ env.bucket_name }}/${{ env.s3_path }})" >> $GITHUB_STEP_SUMMARY
           
