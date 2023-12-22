@@ -6,68 +6,49 @@ on:
       - 'main'
   workflow_dispatch:
     inputs:
-      build_name:
-        description: 'Build Name'
-        required: false
-        type: choice
-        default: 'EngineeringBuild'
-        options:
-          - 'EngineeringBuild'
-          - 'QaBuild'
       checkout_ref:
         description: 'Checkout branch, tag or SHA'
         required: false
         type: string
         default: 'main'
-
-env:
-  CHECKOUT_REF: 'main'
-  BUILD_NAME: 'EngineeringBuild'
-  S3_BUCKET: 'MyBucket'
+      should_archive:
+        description: 'Whether the artifact should be archived'
+        required: false
+        type: boolean
+        default: false
 
 jobs:
-  init_vars_job:
-    name: Initialize Variables
-    runs-on: ubuntu-latest
-    outputs:
-      scout_checkout_ref: ${{ steps.vars_step.outputs.checkout_ref }}
-      scout_build_name: ${{ steps.vars_step.outputs.build_name }}
-      scout_archive_artifact: ${{ steps.vars_step.outputs.archive_artifact }}
-    steps:
-      - name: copy outputs
-        id: vars_step
-        run: |
-          echo "checkout_ref=${{ inputs.checkout_ref || env.CHECKOUT_REF }} " >> $GITHUB_OUTPUT
-          echo "build_name=${{ inputs.build_name || env.BUILD_NAME }}" >> $GITHUB_OUTPUT    
-          echo "archive_artifact=${{ inputs.build_name && inputs.build_name != env.BUILD_NAME }}" >> $GITHUB_OUTPUT    
   call_workflow_job:
-    needs: init_vars_job
-    name: Generate ${{ needs.init_vars_job.outputs.scout_build_name }}
+    name: Generate
     permissions:
       actions: read
       contents: read
     uses: ./.github/workflows/android-ci-workflow.yml
+    env:
+      build_name: 'EngineeringBuild'
     with:
-      scout_checkout_ref: ${{ needs.init_vars_job.outputs.scout_checkout_ref }}
-      scout_build_name: ${{ needs.init_vars_job.outputs.scout_build_name }}
+      scout_checkout_ref: ${{ inputs.checkout_ref }}
+      scout_build_name: ${{ env.build_name }}
   archive_artifact_job:
+    name: Archive
     needs:
-      - init_vars_job
       - call_workflow_job
-    if: needs.init_vars_job.outputs.scout_archive_artifact
-    name: Archive Artifact
+    if: ${{ inputs.should_archive }}
     runs-on: ubuntu-latest
+    env:
+      build_name: 'EngineeringBuild'
+      bucket_name: 'MyBucket'
+      artifact_name: ${{ needs.call_workflow_job.outputs.scout_artifact_name }}
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v4.1.0
         with:
-          name: ${{ needs.call_workflow_job.outputs.scout_artifact_name }}  
+          name: ${{ env.artifact_name }}  
       - name: Copy to S3
         run: | 
           echo 'TODO - archive to S3' 
-          echo 's3_bucket=${{ env.S3_BUCKET }}' >> $GITHUB_ENV
-          echo "s3_path=${{ needs.init_vars_job.outputs.scout_build_name }}/${{ needs.call_workflow_job.outputs.scout_artifact_name }}" >> $GITHUB_ENV
+          echo "s3_path=${{ env.build_name }}/${{ env.artifact_name }}" >> $GITHUB_ENV
       - name: Add build summary
         run: |
-          echo "#### This build artifact is archived at [Amazon S3 Bucket (TODO)](https://s3.amazon.com/${{ env.s3_bucket }}/${{ env.s3_path }})" >> $GITHUB_STEP_SUMMARY
+          echo "#### This build artifact is archived at [Amazon S3 Bucket (TODO)](https://s3.amazon.com/${{ env.bucket_name }}/${{ env.s3_path }})" >> $GITHUB_STEP_SUMMARY
           
