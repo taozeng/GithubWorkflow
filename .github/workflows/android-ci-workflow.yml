@@ -48,10 +48,6 @@ jobs:
         base-ref: ${{ steps.nx_set_shas.outputs.base }}
         myToken: ${{ secrets.GITHUB_TOKEN }}
         fetch: false
-    - name: Add changelog summary
-      run: |
-        echo "#### Changelog since the last successful build" >> $GITHUB_STEP_SUMMARY
-        echo "${{ steps.changelog.outputs.changelog }}" >> $GITHUB_STEP_SUMMARY
     - name: Set up JDK
       uses: actions/setup-java@v4
       with:
@@ -80,3 +76,5 @@ jobs:
         echo "#### ${{ inputs.build_name }} Version code: ${{ env.scout_version_code }}" >> $GITHUB_STEP_SUMMARY
         echo "- Git Repository: https://github.com/${{ github.repository }}/tree/$(git rev-parse HEAD)  " >> $GITHUB_STEP_SUMMARY
         echo "- Git reference: $(git describe --all)  " >> $GITHUB_STEP_SUMMARY
+        echo "#### Changelog since the last successful build" >> $GITHUB_STEP_SUMMARY
+        echo "${{ steps.changelog.outputs.changelog }}" >> $GITHUB_STEP_SUMMARY
