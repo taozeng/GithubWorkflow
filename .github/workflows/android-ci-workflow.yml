@@ -41,7 +41,7 @@ jobs:
     steps:
     - name: Print inputs
       run: |
-        run: echo "${{ toJSON(github.event.inputs) }}"
+        echo "${{ toJSON(github.event.inputs) }}"
     - name: Print build environment
       run:
         env | sort      
