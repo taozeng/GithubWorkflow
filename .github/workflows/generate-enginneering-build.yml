@@ -32,7 +32,7 @@ jobs:
     needs:
       - call_workflow_job
     if: ${{ inputs.should_archive }}
-    uses: ./.github/workflows/archive_s3-workflow.yml
+    uses: ./.github/workflows/archive-s3-workflow.yml
     with:
       bucket_name: 's3://client-build-archives'
       folder_name: 'EngineeringBuild'
