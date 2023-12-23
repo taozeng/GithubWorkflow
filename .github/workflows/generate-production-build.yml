@@ -2,26 +2,13 @@ name: Generate Production Build
 
 on:
   workflow_dispatch:
-
-env:
-  CHECKOUT_REF: 'release'
-  BUILD_NAME: 'ProductionBuild'
+    checkout_ref:
+      description: 'Checkout branch, tag or SHA'
+      required: false
+      type: choice
+      default: 'release'
 
 jobs:
-  init_vars_job:
-    name: Initialize Variables
-    runs-on: ubuntu-latest
-    outputs:
-      scout_checkout_ref: ${{ steps.vars_step.outputs.checkout_ref }}
-      scout_build_name: ${{ steps.vars_step.outputs.build_name }}
-      scout_archive_artifact: ${{ steps.vars_step.outputs.archive_artifact }}
-    steps:
-      - name: copy outputs
-        id: vars_step
-        run: |
-          echo "checkout_ref=${{ env.CHECKOUT_REF }} " >> $GITHUB_OUTPUT
-          echo "build_name=${{ env.BUILD_NAME }}" >> $GITHUB_OUTPUT    
-          echo "archive_artifact=true" >> $GITHUB_OUTPUT  
   call_workflow_job:
     needs: init_vars_job
     name: Generate ${{ needs.init_vars_job.outputs.scout_build_name }}
@@ -30,5 +17,5 @@ jobs:
       contents: read
     uses: ./.github/workflows/android-ci-workflow.yml
     with:
-      scout_checkout_ref: ${{ needs.init_vars_job.outputs.scout_checkout_ref }}
-      scout_build_name: ${{ needs.init_vars_job.outputs.scout_build_name }}
+      build_name: 'ProductionBuild'
+      checkout_ref: ${{ inputs.checkout_ref }}
