@@ -41,8 +41,7 @@ jobs:
     steps:
     - name: Print inputs
       run: |
-        echo "checkout_ref: ${{ inputs.checkout_ref }}"
-        echo "build_name: ${{ inputs.build_name }}"
+        run: echo "${{ toJSON(github.event.inputs) }}"
     - name: Print build environment
       run:
         env | sort      
