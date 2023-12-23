@@ -7,6 +7,8 @@ on:
       required: false
       type: choice
       default: 'release'
+      options:
+      - release
 
 jobs:
   call_workflow_job:
