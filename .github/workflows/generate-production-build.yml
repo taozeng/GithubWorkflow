@@ -9,6 +9,7 @@ on:
       default: 'release'
       options:
       - release
+      - main
 
 jobs:
   call_workflow_job:
