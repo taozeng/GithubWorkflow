@@ -30,7 +30,7 @@ jobs:
   archive_artifact_job:
     name: Archive
     needs:
-      - call_workflow_job
+      - build_workflow_job
     if: ${{ inputs.should_archive }}
     uses: ./.github/workflows/archive-s3-workflow.yml
     with:
