@@ -34,4 +34,4 @@ jobs:
           echo "aws s3 cp ${{ env.file_name }} ${{ env.s3_path }}"
       - name: Add build summary
         run: |
-          echo "#### This build artifact is archived at [Amazon S3 Bucket (TODO)](${{ env.s3_path }}/${{ env.file_name }})" >> $GITHUB_STEP_SUMMARY
+          echo "#### This build artifact is archived at [Amazon S3](${{ env.s3_path }}${{ env.file_name }})" >> $GITHUB_STEP_SUMMARY
