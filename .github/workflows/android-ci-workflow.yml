@@ -8,24 +8,34 @@ on:
           required: true
           type: string
         build_name:
-          description: 'An optional string to describe the build'          
+          description: 'A string to describe the build'          
           required: false
           type: string
           default: 'Build'
+        run_os:
+          description: 'OS for this workflow'
+          required: false
+          type: string
+          default: 'ubuntu-22.04'          
+        java_ver:
+          description: 'Java version to build Android applications'
+          required: false
+          type: string
+          default: '17'
+        java_dist:
+          description: 'Java distribution to build Android applications'
+          required: false
+          type: string
+          default: 'temurin'
       outputs:
         scout_artifact_name:
           description: 'The file name of the generated artifact'
           value: ${{ jobs.build-job.outputs.artifact_name }}
-
-env:
-  run_os: 'ubuntu-22.04'
-  java_ver: '17'
-  java_dist: 'temurin'
   
 jobs:
   build-job:
     name: Build
-    runs-on: ${{ env.run_os }}
+    runs-on: ${{ inputs.run_os }}
     outputs:
       artifact_name: ${{ steps.generate_artifact_name.outputs.artifact_name }}
     steps:
@@ -56,8 +66,8 @@ jobs:
     - name: Set up JDK
       uses: actions/setup-java@v4
       with:
-        java-version: ${{ env.java_ver }}
-        distribution: ${{ env.java_dist }}
+        java-version: ${{ inputs.java_ver }}
+        distribution: ${{ inputs.java_dist }}
         cache: gradle
     - name: Generate version code
       run: |
