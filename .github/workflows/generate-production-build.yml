@@ -12,7 +12,7 @@ on:
         - release
 
 jobs:
-  call_workflow_job:
+  build_workflow_job:
     name: Generate
     permissions:
       actions: read
