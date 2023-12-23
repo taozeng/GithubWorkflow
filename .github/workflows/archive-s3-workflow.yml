@@ -9,7 +9,7 @@ on:
           type: string
         folder_name:
           description: 'S3 destination folder name (without /)'          
-          required: false
+          required: true
           type: string
           default: ''
         artifact_name:
