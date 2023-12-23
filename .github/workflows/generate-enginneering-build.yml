@@ -32,21 +32,8 @@ jobs:
     needs:
       - call_workflow_job
     if: ${{ inputs.should_archive }}
-    runs-on: ubuntu-latest
-    env:
-      bucket_name: 'https://s3.amazon.com/MyBucket'
-      build_name: 'EngineeringBuild'
-      artifact_name: ${{ needs.call_workflow_job.outputs.scout_artifact_name }}
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v4.1.0
-        with:
-          name: ${{ env.artifact_name }}  
-      - name: Copy to S3
-        run: | 
-          echo 'TODO - archive to S3' 
-          echo "s3_path=${{ env.build_name }}/${{ env.artifact_name }}" >> $GITHUB_ENV
-      - name: Add build summary
-        run: |
-          echo "#### This build artifact is archived at [Amazon S3 Bucket (TODO)](${{ env.bucket_name }}/${{ env.s3_path }})" >> $GITHUB_STEP_SUMMARY
-          
+    uses: ./.github/workflows/archive_s3-workflow.yml
+    with:
+      bucket_name: 's3://client-build-archives'
+      folder_name: 'EngineeringBuild'
+      artifact_name: ${{ needs.build_workflow_job.outputs.artifact_name }}
