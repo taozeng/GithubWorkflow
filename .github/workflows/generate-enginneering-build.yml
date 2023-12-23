@@ -26,7 +26,7 @@ jobs:
     uses: ./.github/workflows/android-ci-workflow.yml
     with:
       build_name: 'EngineeringBuild'
-      checkout_ref: ${{ inputs.checkout_ref || 'main' }}
+      checkout_ref: ${{ inputs.checkout_ref }}
   archive_artifact_job:
     name: Archive
     needs:
