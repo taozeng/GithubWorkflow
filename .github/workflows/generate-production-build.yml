@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     checkout_ref:
       description: 'Checkout branch, tag or SHA'
-      required: false
+      required: true
       type: choice
       default: 'release'
       options:
