@@ -13,7 +13,7 @@ on:
 
 jobs:
   call_workflow_job:
-    name: Generate ${{ needs.init_vars_job.outputs.scout_build_name }}
+    name: Generate
     permissions:
       actions: read
       contents: read
