@@ -8,12 +8,12 @@ on:
     inputs:
       checkout_ref:
         description: 'Checkout branch, tag or SHA'
-        required: false
+        required: true
         type: string
         default: 'main'
       should_archive:
         description: 'Archive generated artifact'
-        required: false
+        required: true
         type: boolean
         default: false
 

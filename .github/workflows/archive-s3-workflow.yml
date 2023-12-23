@@ -23,14 +23,15 @@ jobs:
     runs-on: ubuntu-latest
     env:
       s3_path: ${{ inputs.bucket_name }}/${{ inputs.folder_name }}/
+      file_name: ${{ inputs.artifact_name }}
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v4.1.0
         with:
-          name: ${{ inputs.artifact_name }}
+          name: ${{ env.file_name }}
       - name: Copy to S3
         run: |
-          echo "aws s3 cp ${{ inputs.artifact_name }} ${{ env.s3_path }}"
+          echo "aws s3 cp ${{ env.file_name }} ${{ env.s3_path }}"
       - name: Add build summary
         run: |
-          echo "#### This build artifact is archived at [Amazon S3 Bucket (TODO)](${{ env.s3_path }}/${{ inputs.bucket_name }})" >> $GITHUB_STEP_SUMMARY
+          echo "#### This build artifact is archived at [Amazon S3 Bucket (TODO)](${{ env.s3_path }}/${{ env.file_name }})" >> $GITHUB_STEP_SUMMARY
