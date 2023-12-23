@@ -28,7 +28,7 @@ on:
           type: string
           default: 'temurin'
       outputs:
-        scout_artifact_name:
+        artifact_name:
           description: 'The file name of the generated artifact'
           value: ${{ jobs.build-job.outputs.artifact_name }}
   
@@ -39,9 +39,6 @@ jobs:
     outputs:
       artifact_name: ${{ steps.generate_artifact_name.outputs.artifact_name }}
     steps:
-    - name: Print inputs
-      run: |
-        echo "${{ toJSON(inputs) }}"
     - name: Print build environment
       run:
         env | sort      
