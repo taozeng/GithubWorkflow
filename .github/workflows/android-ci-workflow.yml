@@ -34,7 +34,7 @@ on:
   
 jobs:
   build-job:
-    name: Build
+    name: Build Android
     runs-on: ${{ inputs.run_os }}
     outputs:
       artifact_name: ${{ steps.generate_artifact_name.outputs.artifact_name }}

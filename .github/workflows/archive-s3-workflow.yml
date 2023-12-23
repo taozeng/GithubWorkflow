@@ -19,7 +19,7 @@ on:
   
 jobs:
   archive-job:
-    name: S3
+    name: Copy to S3
     runs-on: ubuntu-latest
     env:
       s3_path: ${{ inputs.bucket_name }}/${{ inputs.folder_name }}/
@@ -30,7 +30,7 @@ jobs:
           name: ${{ inputs.artifact_name }}
       - name: Copy to S3
         run: |
-          echo "aws s3 cp ${{ inputs.artifact_name }} ${{ env.s3_path }}" >> $GITHUB_ENV
+          echo "aws s3 cp ${{ inputs.artifact_name }} ${{ env.s3_path }}"
       - name: Add build summary
         run: |
           echo "#### This build artifact is archived at [Amazon S3 Bucket (TODO)](${{ env.s3_path }}/${{ inputs.bucket_name }})" >> $GITHUB_STEP_SUMMARY
