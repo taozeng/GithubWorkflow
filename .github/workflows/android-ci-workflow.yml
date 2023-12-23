@@ -17,10 +17,15 @@ on:
           description: 'The file name of the generated artifact'
           value: ${{ jobs.build-job.outputs.artifact_name }}
 
+env:
+  run_os: 'ubuntu-22.04'
+  java_ver: '17'
+  java_dist: 'temurin'
+  
 jobs:
   build-job:
     name: Build
-    runs-on: ubuntu-22.04
+    runs-on: ${{ env.run_os }}
     outputs:
       artifact_name: ${{ steps.generate_artifact_name.outputs.artifact_name }}
     steps:
@@ -31,7 +36,7 @@ jobs:
     - name: Print build environment
       run:
         env | sort      
-    - name: Checkout code
+    - name: Checkout code from ${{ inputs.checkout_ref }}
       uses: actions/checkout@v4
       with:
         ref: ${{ inputs.checkout_ref }}
@@ -51,8 +56,8 @@ jobs:
     - name: Set up JDK
       uses: actions/setup-java@v4
       with:
-        java-version: '17'
-        distribution: 'temurin'
+        java-version: ${{ env.java_ver }}
+        distribution: ${{ env.java_dist }}
         cache: gradle
     - name: Generate version code
       run: |
